@@ -1,0 +1,32 @@
+hubbii/
+├── env/                        # Virtual environment (not shared in version control)
+├── hubbii_backend/             # Root Django project folder
+│   ├── __init__.py             # Python package initializer
+│   ├── asgi.py                 # ASGI configuration for async support
+│   ├── settings.py             # Main settings file
+│   ├── urls.py                 # URL routing
+│   ├── wsgi.py                 # WSGI configuration for server deployment
+│   ├── static/                 # Static files (CSS, JS)
+│   ├── templates/              # HTML templates
+├── apps/                       # Folder to house custom Django apps
+│   ├── portfolio/              # Portfolio management app
+│   │   ├── migrations/         # Migration files for the app
+│   │   ├── admin.py            # Admin site configurations
+│   │   ├── apps.py             # App configuration
+│   │   ├── models.py           # Database models
+│   │   ├── serializers.py      # DRF serializers (if APIs are used)
+│   │   ├── urls.py             # App-specific URL routing
+│   │   ├── views.py            # App logic and view handling
+│   ├── job_board/              # Job board management app
+│   │   ├── migrations/
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   ├── views.py
+├── manage.py                   # Django's command-line utility
+├── requirements.txt            # Project dependencies
+├── README.md                   # Documentation for the project
+├── .gitignore                  # Files to ignore in version control
+
