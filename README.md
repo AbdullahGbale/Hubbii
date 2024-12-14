@@ -1,136 +1,165 @@
-# Hubbii
-
-Hubbii is a cutting-edge web application designed to connect people with shared interests through curated communities. Whether you're looking to collaborate on projects, learn from experts, or simply share ideas with like-minded individuals, Hubbii provides the platform to make it happen.
+# Hubbii Project
 
 ## Table of Contents
-- [Project Description](#project-description)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Setup and Installation](#setup-and-installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Technologies Used](#technologies-used)
+4. [Setup Instructions](#setup-instructions)
+5. [Directory Structure](#directory-structure)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Authors](#authors)
 
 ---
 
-## Project Description
-Hubbii enables users to:
-- Join communities based on shared interests.
-- Post ideas, projects, and questions to engage with others.
-- Collaborate on projects with features like task tracking and file sharing.
-- Network with other professionals or hobbyists to build meaningful connections.
-
-The platform emphasizes simplicity and user-friendliness, providing tools to discover, contribute to, and grow within specialized communities.
+## Introduction
+Hubbii is an innovative project portfolio platform designed to empower professionals and students by allowing them to showcase their projects, certifications, and current ideas. The platform focuses on seamless navigation, real-time collaboration, and secure management of user data. Hubbii serves as a comprehensive solution for creating and sharing professional portfolios with ease.
 
 ---
 
 ## Features
-- **User Authentication**: Secure signup, login, and password reset via email.
-- **Community Creation and Management**: Create, join, and manage interest-based communities.
-- **Discussion Forums**: Post and reply to threads within communities.
-- **Profile Customization**: Personalize profiles with bios, images, and professional links.
-- **Collaboration Tools**: Project management, task boards, and file sharing within communities.
-- **Search and Discovery**: Easily find communities and members with advanced search features.
+- **User Authentication:** Secure login and registration with email verification.
+- **Portfolio Management:** CRUD operations for managing user portfolios.
+- **File Uploads:** Support for project images, videos, and documents.
+- **Responsive Dashboard:** User-friendly and interactive dashboard for managing projects and tracking progress.
+- **Real-Time Notifications:** Alerts for portfolio updates and interactions.
+- **Third-Party Integrations:** Email services for OTP verification and file storage.
+- **Search and Filters:** Advanced search options to find projects based on categories and tags.
 
 ---
 
 ## Technologies Used
-- **Backend**: Django, Django REST Framework
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap
-- **Database**: PostgreSQL
-- **Authentication**: Django Allauth
-- **Deployment**: Docker, Nginx, Gunicorn
-- **Testing**: Pytest, Postman
+### Backend
+- Django (Python)
+- Django REST Framework (DRF)
+- PostgreSQL
+
+### Frontend
+- HTML5, CSS3, JavaScript (ES6)
+- ReactJS
+
+### Others
+- AWS S3 for file storage
+- Redis and Celery for asynchronous tasks
+- Docker for containerization
 
 ---
 
-## Setup and Installation
-
+## Setup Instructions
 ### Prerequisites
 - Python 3.9+
+- Node.js and npm
 - PostgreSQL
-- Node.js (for frontend assets)
-- Docker (optional, for containerized deployment)
+- Redis
+- Docker (optional)
 
-### Installation Steps
-1. **Clone the Repository**:
+### Backend Setup
+1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/hubbii.git
+   git clone https://github.com/your-username/hubbii.git
    cd hubbii
    ```
 
-2. **Create a Virtual Environment**:
+2. Create and activate a virtual environment:
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. **Install Dependencies**:
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Set Up the Database**:
-   Update `DATABASES` in `settings.py` to match your PostgreSQL configuration, then run:
+4. Configure environment variables in `.env`:
+   ```env
+   SECRET_KEY=your_secret_key
+   DEBUG=True
+   DATABASE_URL=postgresql://user:password@localhost:5432/hubbii_db
+   EMAIL_HOST_USER=your_email@example.com
+   EMAIL_HOST_PASSWORD=your_email_password
+   ```
+
+5. Run migrations:
    ```bash
-   python manage.py makemigrations
    python manage.py migrate
    ```
 
-5. **Run the Development Server**:
+6. Start the development server:
    ```bash
    python manage.py runserver
    ```
 
-6. **Access the App**:
-   Open your browser and navigate to `http://127.0.0.1:8000/`.
-
-### Optional: Using Docker
-1. **Build and Start the Containers**:
+### Frontend Setup
+1. Navigate to the `frontend` directory:
    ```bash
-   docker-compose up --build
+   cd frontend
    ```
 
-2. **Access the App**:
-   The application will be available at `http://localhost/`.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm start
+   ```
 
 ---
 
-## Usage
-### For Users
-1. Sign up and create your profile.
-2. Search for communities or create your own.
-3. Engage with posts, collaborate on projects, and connect with other users.
-
-### For Developers
-Use the provided API endpoints to extend or integrate Hubbii with other applications. See the [API Endpoints](#api-endpoints) section for details.
-
----
-
-## API Endpoints
-| Method | Endpoint                 | Description                        |
-|--------|--------------------------|------------------------------------|
-| POST   | `/api/auth/login/`       | Log in a user                     |
-| POST   | `/api/auth/register/`    | Register a new user               |
-| GET    | `/api/communities/`      | Retrieve all communities          |
-| POST   | `/api/communities/`      | Create a new community            |
-| GET    | `/api/communities/{id}/` | Retrieve a specific community      |
-| POST   | `/api/posts/`            | Create a new post                 |
-| GET    | `/api/posts/{id}/`       | Retrieve a specific post          |
+## Directory Structure
+```
+hubbii/
+├── backend/
+│   ├── hubbii/
+│   ├── users/
+│   ├── projects/
+│   └── templates/
+├── frontend/
+│   ├── public/
+│   └── src/
+├── .env
+├── requirements.txt
+└── README.md
+```
 
 ---
 
 ## Contributing
-We welcome contributions! To contribute:
 1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature-name`).
-5. Create a pull request.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit changes:
+   ```bash
+   git commit -m "Description of changes"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a pull request.
 
 ---
 
 ## License
-Hubbii is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Authors
+### Team Hubbii
+1. **Miracle Amajama**: Backend Developer  
+   Role: Focuses on designing and implementing the database architecture, managing user authentication and authorization systems, and integrating third-party services for file uploads and email verification.
+
+2. **Yunusa Abdullahi**: Frontend Developer  
+   Role: Designs and develops user-friendly interfaces for the landing page and login/register pages, ensuring seamless UI/UX experiences and responsiveness.
+
+3. **Kingsley Okoronkwo**: Backend Developer  
+   Role: Specializes in building scalable APIs, ensuring the platform's performance and security, and developing key features such as CRUD operations and real-time notifications.
+
+4. **Ajobiewe Joseph**: Frontend Developer  
+   Role: Builds and optimizes the dashboard and project detail pages, implementing interactive features and ensuring smooth navigation throughout the platform.
 
