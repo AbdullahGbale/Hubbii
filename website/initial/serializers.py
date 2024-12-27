@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Post
 from .models import Project
+from .models import Portfolio
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:

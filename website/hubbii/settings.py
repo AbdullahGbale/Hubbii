@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'portfolio',  # New app
      'rest_framework', # For API's
+     'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +58,10 @@ ROOT_URLCONF = 'hubbii.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+
+        'DIRS': [
+            BASE_DIR / 'templates',  # Add this line
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,3 +132,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default_secret_key_for_dev')

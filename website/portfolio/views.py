@@ -1,33 +1,80 @@
-from .models import Project
-from rest_framework.generics import ListAPIView
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
-from .serializers import ProjectSerializer
+from django.core.mail import send_mail
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import UserProfile, Project
+
+# Create your views here.
+
+def index(request):
+    return render(request, 'index.html')
+
+def home(request):
+    return render(request, 'home.html')
+
+
+def profile_detail(request, user_id):
+    # Ensure a profile is created if it doesn’t exist
+    profile, created = UserProfile.objects.get_or_create(user_id=user_id)
+
+    return render(request, 'portfolio/profile.html', {'profile': profile, 'created': created})
+
+
+def register_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            messages.success(request, 'Account created successfully!')
+            return redirect('login')
+        else:
+            messages.error(request, 'Passwords do not match.')
+    return render(request, 'portfolio/register.html')
+
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Welcome, {user.username}!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Invalid credentials.')
+    return render(request, 'portfolio/login.html')
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'Logged out successfully.')
+    return redirect('home')
+
 from django.shortcuts import render
-from rest_framework import generics
-from .models import Post
-from .serializers import PostSerializer
+from .models import Project, Certificate
 
-# Create your views here;
+def projects(request):
+    projects = Project.objects.all()  # Fetch all projects from the database
+    return render(request, 'portfolio/projects.html', {'projects': projects})
 
-
-# List all posts or create a new one
-class PostList(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+def certificate_list(request):
+    certificates = Certificate.objects.all()  # Fetch all certificates from the database
+    return render(request, 'portfolio/certificates.html', {'certificates': certificates})
 
 
 
-# Retrieve, update, or delete a specific post
-class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
 
 
-class ProjectListAPIView(ListAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['status']  # Allow filtering by 'status'
-    search_fields = ['title', 'description']  # Allow searching by these fields
-    ordering_fields = ['created_at', 'title']  # Allow ordering by these fields
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        message = request.POST['message']
+        email = request.POST['email']
+        send_mail(f"Message from {name}", message, email, ['admin@example.com'])
+    return render(request, 'portfolio/contact.html')
+
