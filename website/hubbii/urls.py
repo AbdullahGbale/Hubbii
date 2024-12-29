@@ -17,10 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views  # Import views from your app
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', views.home, name='home'),  # Define the root URL for the homepage
     # other paths...
     path('admin/', admin.site.urls),
-    path('api/', include('portfolio.urls')),
-]
+    path('', include('portfolio.urls')),  # Routes to the portfolio app
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
