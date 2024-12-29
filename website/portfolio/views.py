@@ -1,80 +1,51 @@
-from django.core.mail import send_mail
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from .models import UserProfile, Project
+from django.shortcuts import render, redirect
+from .models import PortfolioSection, Contact, Experience, Skill
 
-# Create your views here.
-
-def index(request):
-    return render(request, 'index.html')
-
+# Home View
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'portfolio/home.html')
 
+# Portfolio Section Views
+def portfolio_section_list(request):
+    sections = PortfolioSection.objects.filter(user=request.user)
+    return render(request, 'portfolio/portfolio_section_list.html', {'sections': sections})
 
-def profile_detail(request, user_id):
-    # Ensure a profile is created if it doesn’t exist
-    profile, created = UserProfile.objects.get_or_create(user_id=user_id)
-
-    return render(request, 'portfolio/profile.html', {'profile': profile, 'created': created})
-
-
-def register_user(request):
+def portfolio_section_add(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
+        # Handle form submission
+        pass
+    return render(request, 'portfolio/portfolio_section_add.html')
 
-        if password == confirm_password:
-            user = User.objects.create_user(username=username, email=email, password=password)
-            messages.success(request, 'Account created successfully!')
-            return redirect('login')
-        else:
-            messages.error(request, 'Passwords do not match.')
-    return render(request, 'portfolio/register.html')
+# Contact Views
+def contact_detail(request):
+    contact = Contact.objects.get(user=request.user)
+    return render(request, 'portfolio/contact_detail.html', {'contact': contact})
 
-def login_user(request):
+def contact_edit(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            messages.success(request, f'Welcome, {user.username}!')
-            return redirect('home')
-        else:
-            messages.error(request, 'Invalid credentials.')
-    return render(request, 'portfolio/login.html')
+        # Handle form submission
+        pass
+    return render(request, 'portfolio/contact_edit.html')
 
-def logout_user(request):
-    logout(request)
-    messages.success(request, 'Logged out successfully.')
-    return redirect('home')
+# Experience Views
+def experience_list(request):
+    experiences = Experience.objects.filter(user=request.user)
+    return render(request, 'portfolio/experience_list.html', {'experiences': experiences})
 
-from django.shortcuts import render
-from .models import Project, Certificate
-
-def projects(request):
-    projects = Project.objects.all()  # Fetch all projects from the database
-    return render(request, 'portfolio/projects.html', {'projects': projects})
-
-def certificate_list(request):
-    certificates = Certificate.objects.all()  # Fetch all certificates from the database
-    return render(request, 'portfolio/certificates.html', {'certificates': certificates})
-
-
-
-
-
-def contact(request):
+def experience_add(request):
     if request.method == 'POST':
-        name = request.POST['name']
-        message = request.POST['message']
-        email = request.POST['email']
-        send_mail(f"Message from {name}", message, email, ['admin@example.com'])
-    return render(request, 'portfolio/contact.html')
+        # Handle form submission
+        pass
+    return render(request, 'portfolio/experience_add.html')
+
+# Skill Views
+def skill_list(request):
+    skills = Skill.objects.filter(user=request.user)
+    return render(request, 'portfolio/skill_list.html', {'skills': skills})
+
+def skill_add(request):
+    if request.method == 'POST':
+        # Handle form submission
+        pass
+    return render(request, 'portfolio/skill_add.html')
 
