@@ -4,22 +4,78 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
 
+
 # Home View
 def home(request):
     return render(request, 'portfolio/home.html')
 
 
 
-def register(request):
+
+
+
+
+# User Signup
+def register_user(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your account has been created! You can now log in.')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('register')
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already taken.")
+            return redirect('register')
+
+        user = User.objects.create_user(username=username, email=email, password=password)
+        UserProfile.objects.create(user=user)  # Create associated UserProfile
+        messages.success(request, "Registration successful. Please log in.")
+        return redirect('login')
+
+    return render(request, 'auth/register.html')
+
+
+
+
+
+
+
+# User Login
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            messages.success(request, "Login successful.")
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid username or password.")
             return redirect('login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+
+    return render(request, 'auth/login.html')
+
+
+
+
+
+
+
+# User Logout
+def logout_user(request):
+    logout(request)
+    messages.success(request, "You have been logged out.")
+    return redirect('home')
+
+
+
+
 
 
 
@@ -28,16 +84,34 @@ def portfolio_section_list(request):
     sections = PortfolioSection.objects.filter(user=request.user)
     return render(request, 'portfolio/portfolio_section_list.html', {'sections': sections})
 
+
+
+
+
+
+
 def portfolio_section_add(request):
     if request.method == 'POST':
         # Handle form submission
         pass
     return render(request, 'portfolio/portfolio_section_add.html')
 
+
+
+
+
+
+
 # Contact Views
 def contact_detail(request):
     contact = Contact.objects.get(user=request.user)
     return render(request, 'portfolio/contact_detail.html', {'contact': contact})
+
+
+
+
+
+
 
 def contact_edit(request):
     if request.method == 'POST':
@@ -45,10 +119,24 @@ def contact_edit(request):
         pass
     return render(request, 'portfolio/contact_edit.html')
 
+
+
+
+
+
+
+
 # Experience Views
 def experience_list(request):
     experiences = Experience.objects.filter(user=request.user)
     return render(request, 'portfolio/experience_list.html', {'experiences': experiences})
+
+
+
+
+
+
+
 
 def experience_add(request):
     if request.method == 'POST':
@@ -56,10 +144,22 @@ def experience_add(request):
         pass
     return render(request, 'portfolio/experience_add.html')
 
+
+
+
+
+
+
+
 # Skill Views
 def skill_list(request):
     skills = Skill.objects.filter(user=request.user)
     return render(request, 'portfolio/skill_list.html', {'skills': skills})
+
+
+
+
+
 
 def skill_add(request):
     if request.method == 'POST':
