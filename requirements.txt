@@ -1,4 +1,15 @@
-Django>=5.1,<6.0
+Django>==5.1,<6.0
 djangorestframework
 django-filter
+asgiref==4.x.x
+Pillow==9.x.x
+psycopg2-binary==2.x.x
+django-allauth==0.x.x
+django-crispy-forms==2.x.x
+djangorestframework==3.x.x
+django-storages==1.x.x
+django-compressor==4.x.x
+pytest-django==4.x.x
+flake8==6.x.x
+black==23.x.x
 
