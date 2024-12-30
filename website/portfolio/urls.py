@@ -9,6 +9,7 @@ urlpatterns = [
 
 
 urlpatterns += [
+    path('profile/<int:user_id>/', views.profile_detail, name='profile_detail'),
     path('', views.home, name='home'),
     path('', views.index, name='index'),
     path('register/', views.register_user, name='register'),
@@ -23,6 +24,7 @@ urlpatterns += [
     path('experience/add/', views.experience_add, name='experience_add'),
     path('skill/', views.skill_list, name='skill_list'),
     path('skill/add/', views.skill_add, name='skill_add'),
+    
 
 
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),

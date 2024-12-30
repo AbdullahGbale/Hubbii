@@ -2,12 +2,22 @@ from django.shortcuts import render, redirect
 from .models import PortfolioSection, Contact, Experience, Skill
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from .models import UserProfile
 
 
 # Home View
 def home(request):
     return render(request, 'portfolio/home.html')
+
+
+
+
+
+
+def index(request):
+    return render(request, 'portfolio/index.html')
 
 
 
@@ -72,6 +82,25 @@ def logout_user(request):
     logout(request)
     messages.success(request, "You have been logged out.")
     return redirect('home')
+
+
+
+
+
+
+
+def projects(request):
+    # Your logic to handle the 'projects' page
+    return render(request, 'portfolio/projects.html')
+
+
+
+
+
+def profile_detail(request, user_id):
+    user = get_object_or_404(User, id=user_id)  # Get the user or return a 404
+    profile = user.userprofile  # Access the related UserProfile object (assuming a OneToOneField relationship)
+    return render(request, 'profile/detail.html', {'user': user, 'profile': profile})
 
 
 
