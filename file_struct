@@ -1,32 +1,55 @@
-hubbii/
-├── env/                        # Virtual environment (not shared in version control)
-├── hubbii_backend/             # Root Django project folder
-│   ├── __init__.py             # Python package initializer
-│   ├── asgi.py                 # ASGI configuration for async support
-│   ├── settings.py             # Main settings file
-│   ├── urls.py                 # URL routing
-│   ├── wsgi.py                 # WSGI configuration for server deployment
-│   ├── static/                 # Static files (CSS, JS)
-│   ├── templates/              # HTML templates
-├── apps/                       # Folder to house custom Django apps
-│   ├── portfolio/              # Portfolio management app
-│   │   ├── migrations/         # Migration files for the app
-│   │   ├── admin.py            # Admin site configurations
-│   │   ├── apps.py             # App configuration
-│   │   ├── models.py           # Database models
-│   │   ├── serializers.py      # DRF serializers (if APIs are used)
-│   │   ├── urls.py             # App-specific URL routing
-│   │   ├── views.py            # App logic and view handling
-│   ├── job_board/              # Job board management app
-│   │   ├── migrations/
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── models.py
-│   │   ├── serializers.py
-│   │   ├── urls.py
-│   │   ├── views.py
-├── manage.py                   # Django's command-line utility
-├── requirements.txt            # Project dependencies
-├── README.md                   # Documentation for the project
-├── .gitignore                  # Files to ignore in version control
+Hubbii/
+└── website/                            # Main project directory
+    ├── manage.py                      # Django management script for running commands (e.g., runserver, migrate)
+    ├── db.sqlite3                     # SQLite database file (can be replaced with another DB engine)
+    ├── templates/                     # Global templates shared across all apps (e.g., base.html)
+    │   ├── base.html                  # (Optional) Base template for global layout
+    ├── Hubbii/                        # Project configuration folder
+    │   ├── __init__.py                # Marks this directory as a Python package
+    │   ├── asgi.py                    # ASGI configuration for deploying the project with ASGI
+    │   ├── settings.py                # Main project settings file (database, middleware, apps, etc.)
+    │   ├── urls.py                    # Global URL routing for the project
+    │   ├── wsgi.py                    # WSGI configuration for deploying the project with WSGI
+    │   └── __pycache__/               # Compiled Python files for faster execution (auto-generated)
+    ├── portfolio/                     # App directory for the portfolio app
+    │   ├── migrations/                # Database migration files for the portfolio app
+    │   │   ├── __init__.py            # Marks the directory as a Python package
+    │   │   └── [migration files]      # Auto-generated migration scripts
+    │   ├── templates/                 # App-specific templates folder
+    │   │   ├── portfolio/             # Templates specific to the portfolio app
+    │   │   │   ├── home.html          # Homepage template
+    │   │   │   ├── index.html         # Alternative index page template
+    │   │   │   ├── register.html      # User registration template
+    │   │   │   ├── login.html         # User login template
+    │   │   │   ├── profile_detail.html# Displays detailed user profile
+    │   │   │   ├── projects.html      # List of projects
+    │   │   │   ├── portfolio_section_list.html  # List of portfolio sections
+    │   │   │   ├── portfolio_section_add.html   # Form for adding portfolio sections
+    │   │   │   ├── contact_detail.html          # Contact information page
+    │   │   │   ├── contact_edit.html            # Form for editing contact details
+    │   │   │   ├── experience_list.html         # List of experiences
+    │   │   │   ├── experience_add.html          # Form for adding experiences
+    │   │   │   ├── skill_list.html              # List of skills
+    │   │   │   ├── skill_add.html               # Form for adding skills
+    │   │   │   ├── registration/                # Password reset templates
+    │   │   │   │   ├── password_reset_form.html # Form for password reset request
+    │   │   │   │   ├── password_reset_done.html # Confirmation of password reset request
+    │   │   │   │   ├── password_reset_confirm.html # Form to set a new password
+    │   ├── static/                    # Static files folder for the portfolio app
+    │   │   ├── portfolio/             # Static assets specific to the portfolio app
+    │   │   │   ├── css/               # Stylesheets
+    │   │   │   │   └── styles.css     # Main CSS file for styling
+    │   │   │   ├── js/                # JavaScript files
+    │   │   │   │   └── scripts.js     # Main JS file for interactivity
+    │   │   │   ├── images/            # App-specific images
+    │   ├── __init__.py                # Marks this directory as a Python package
+    │   ├── admin.py                   # Admin configuration for the portfolio app
+    │   ├── apps.py                    # Configuration for registering the portfolio app
+    │   ├── models.py                  # Database models for the portfolio app
+    │   ├── tests.py                   # Automated test cases for the portfolio app
+    │   ├── urls.py                    # URL routing specific to the portfolio app
+    │   ├── views.py                   # Views (logic) for handling requests and responses
+    │   └── __pycache__/               # Compiled Python files for faster execution (auto-generated)
+    ├── requirements.txt               # List of Python dependencies for the project
+    └── README.md                      # Documentation or project overview
 
