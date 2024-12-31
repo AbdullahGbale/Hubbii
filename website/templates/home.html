@@ -3,44 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Hubbii</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Link to your CSS file -->
+    <title>Hubbii- Homepage</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <header>
-        <h1>Welcome to Hubbii</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/portfolio/">Portfolio</a></li>
-                <li><a href="/about/">About Us</a></li>
-                <li><a href="/contact/">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <div class="logo">
+                <h1>Hubbii</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#collaborate">Collaborate</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="/login" class="btn">Sign In</a></li>
+                    <li><a href="/register" class="btn">Sign Up</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <section>
-            <h2>Your Professional Portfolio</h2>
-            <p>Build and showcase your portfolio with Hubbii! Whether you're a designer, developer, or photographer, we have the tools for you.</p>
-        </section>
+    <section class="hero">
+        <div class="container">
+            <h2>Welcome to Hubbii</h2>
+            <p>Join a thriving community of developers. Showcase your projects, collaborate, and grow together.</p>
+            <a href="/register" class="btn btn-primary">Get Started</a>
+        </div>
+    </section>
 
-        <section>
-            <h2>Latest Projects</h2>
-            <ul>
-                <li><a href="#">Project 1</a></li>
-                <li><a href="#">Project 2</a></li>
-                <li><a href="#">Project 3</a></li>
-            </ul>
-        </section>
-    </main>
+    <section id="projects" class="section">
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="project-list">
+                <!-- Placeholder for dynamically loaded projects -->
+                <div class="project">
+                    <h3>Project's title</h3>
+                    <p>Short description of the project...</p>
+                    <a href="#" class="btn">View Project</a>
+                </div>
+                <div class="project">
+                    <h3>Project Name</h3>
+                    <p>Short description of the project...</p>
+                    <a href="#" class="btn">View Project</a>
+                </div>
+                <div class="project">
+                    <h3>Project Name</h3>
+                    <p>Short description of the project...</p>
+                    <a href="#" class="btn">View Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="collaborate" class="section">
+        <div class="container">
+            <h2>Collaborate with Others</h2>
+            <p>Find developers with similar interests and start working on something amazing together.</p>
+            <a href="/collaborate" class="btn btn-secondary">Find Collaborators</a>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>Hubbii is a platform designed to bring developers together. Whether you're a beginner or a pro, you'll find a place here to learn, share, and grow.</p>
+        </div>
+    </section>
 
     <footer>
-        <p>&copy; 2024 Hubbii. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2024 Hubbii. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">GitHub</a>
+            </div>
+        </div>
     </footer>
-
 </body>
 </html>
-
