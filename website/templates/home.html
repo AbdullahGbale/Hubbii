@@ -14,32 +14,22 @@
 
 <body>
 
-    <header>
-        <h1>Welcome to Hubbii</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/portfolio/">Portfolio</a></li>
-                <li><a href="/about/">About Us</a></li>
-                <li><a href="/contact/">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}! <a href="{% url 'logout' %}">Logout</a></p>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+    {% endif %}
+    {% block content %}{% endblock %}
 
+   
     <main>
         <section>
             <h2>Your Professional Portfolio</h2>
             <p>Build and showcase your portfolio with Hubbii! Whether you're a designer, developer, or photographer, we have the tools for you.</p>
         </section>
 
-        <section>
-            <h2>Latest Projects</h2>
-            <ul>
-                <li><a href="#">Project 1</a></li>
-                <li><a href="#">Project 2</a></li>
-                <li><a href="#">Project 3</a></li>
-            </ul>
-        </section>
+        
     </main>
 
     <footer>

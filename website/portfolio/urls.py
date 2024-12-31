@@ -17,14 +17,7 @@ urlpatterns += [
     path('logout/', views.logout_user, name='logout'),
     path('projects/', views.projects, name='projects'),
     path('portfolio-section/', views.portfolio_section_list, name='portfolio_section_list'),
-    path('portfolio-section/add/', views.portfolio_section_add, name='portfolio_section_add'),
-    path('contact/', views.contact_detail, name='contact_detail'),
-    path('contact/edit/', views.contact_edit, name='contact_edit'),
-    path('experience/', views.experience_list, name='experience_list'),
-    path('experience/add/', views.experience_add, name='experience_add'),
-    path('skill/', views.skill_list, name='skill_list'),
-    path('skill/add/', views.skill_add, name='skill_add'),
-    
+   
 
 
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
