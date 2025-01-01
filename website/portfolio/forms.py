@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import Post
 
 class CustomSignupForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -15,3 +16,14 @@ class CustomSignupForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+
+class UserSearchForm(forms.Form):
+    username = forms.CharField(max_length=150, required=True, label="Search for a user")
+
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'description', 'image']
