@@ -14,7 +14,13 @@ urlpatterns += [
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('projects/', views.projects, name='projects'),
+    path('search/', views.search, name='search'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('collaborate/', views.collaborate, name='collaborate'),
+    path('portfolio/', views.portfolio, name='portfolio'),
+
+
+
     path('password_reset/', auth_views.PasswordResetView.as_view(
         template_name='pwd_reset/pwd_reset.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(

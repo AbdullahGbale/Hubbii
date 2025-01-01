@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # For rendering the homepage with the logged-in user's name
-@login_required
+#@login_required
 def home(request):
     return render(request, 'home.html', {'user': request.user})
 
@@ -90,12 +90,22 @@ def projects(request):
     return render(request, 'projects.html')
 
 
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        users = User.objects.filter(username__icontains=query)
+    else:
+        users = User.objects.none()  # No results
+    return render(request, 'search_results.html', {'users': users})
 
 
+@login_required
+def collaborate(request):
+    return render(request, 'collaborate.html')
 
-
-
-
+@login_required
+def portfolio(request):
+    return render(request, 'portfolio.html')  # Render the portfolio template
 
 
 
