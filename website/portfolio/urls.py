@@ -15,7 +15,12 @@ urlpatterns += [
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('projects/', views.projects, name='projects'),
-    path('search/', views.search, name='search'),
+    path('profile/<str:username>/', views.user_profile, name='user_profile'),  # User profile
+    path('search/', views.search_users, name='search_users'),
+    path('create/', views.create_post, name='create_post'),
+    path('update/<int:pk>/', views.update_post, name='update_post'),
+    path('delete/<int:pk>/', views.delete_post, name='delete_post'),
+    #path('search/', views.search, name='search'),
     path('collaborate/', views.collaborate, name='collaborate'),
     path('portfolio/', views.portfolio, name='portfolio'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
