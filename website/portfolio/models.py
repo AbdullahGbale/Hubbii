@@ -20,7 +20,7 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    start_date = models.DateField()
+    start_date = models.DateField(default='2024-01-01')
     end_date = models.DateField(null=True, blank=True)
     project_link = models.URLField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
