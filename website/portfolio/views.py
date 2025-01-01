@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
 #from .forms import CustomSignupForm
+from .forms import PostForm
 
 
 # Home View
@@ -23,7 +24,8 @@ def home(request):
 
 
 
-# User Signup
+
+# User Signup without using the default Django form template
 def signup_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -48,7 +50,7 @@ def signup_user(request):
 
 
 '''
-#wanted to django builtin form for user sign up's
+# if you want to use django builtin form for user sign up's
 
 def signup_user(request):
     if request.method == 'POST':
@@ -99,6 +101,26 @@ def logout_user(request):
 
 
 
+# Home Page View
+def home(request):
+    form = UserSearchForm()
+    results = None
+
+    if request.GET.get('username'):
+        form = UserSearchForm(request.GET)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            results = User.objects.filter(username__icontains=username)  # Case-insensitive search
+
+    return render(request, 'home.html', {'form': form, 'results': results})
+
+
+
+# User Profile View
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    posts = user.post_set.all()  # Assuming posts are linked to User
+    return render(request, 'user_profile.html', {'user': user, 'posts': posts})
 
 
 
@@ -107,7 +129,7 @@ def projects(request):
     # Your logic to handle the 'projects' page
     return render(request, 'projects.html')
 
-
+''''
 def search(request):
     query = request.GET.get('q')
     if query:
@@ -115,7 +137,7 @@ def search(request):
     else:
         users = User.objects.none()  # No results
     return render(request, 'search_results.html', {'users': users})
-
+'''
 
 @login_required
 def collaborate(request):
@@ -127,3 +149,60 @@ def portfolio(request):
 
 
 
+def search_users(request):
+    results = None
+    form = UserSearchForm()
+
+    if request.method == 'GET' and 'username' in request.GET:
+        form = UserSearchForm(request.GET)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            results = User.objects.filter(username__icontains=username)  # Case-insensitive search
+
+    return render(request, 'search_users.html', {'form': form, 'results': results})
+
+
+
+
+
+# Create a new post
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('profile', username=request.user.username)  # Redirect to the user's profile
+    else:
+        form = PostForm()
+    return render(request, 'posts/create_post.html', {'form': form})
+
+# View posts for a user
+def user_posts(request, username):
+    user = get_object_or_404(User, username=username)
+    posts = user.posts.all()
+    return render(request, 'posts/user_posts.html', {'user': user, 'posts': posts})
+
+# Update a post
+@login_required
+def update_post(request, pk):
+    post = get_object_or_404(Post, pk=pk, author=request.user)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', username=request.user.username)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'posts/update_post.html', {'form': form})
+
+# Delete a post
+@login_required
+def delete_post(request, pk):
+    post = get_object_or_404(Post, pk=pk, author=request.user)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('profile', username=request.user.username)
+    return render(request, 'posts/delete_post.html', {'post': post})
