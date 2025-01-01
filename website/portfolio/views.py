@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import PortfolioSection, Contact, Experience, Skill
+from .models import Experience, Certificate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -8,8 +8,15 @@ from .models import UserProfile
 
 
 # Home View
+#def home(request):
+    #return render(request, 'home.html')
+
+
+
+# For rendering the homepage with the logged-in user's name
+@login_required
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {'user': request.user})
 
 
 
