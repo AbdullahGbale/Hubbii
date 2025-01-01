@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
-
+from django.contrib.auth.decorators import login_required
 
 # Home View
 #def home(request):
@@ -84,7 +84,7 @@ def logout_user(request):
 
 
 
-
+@login_required
 def projects(request):
     # Your logic to handle the 'projects' page
     return render(request, 'projects.html')
