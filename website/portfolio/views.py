@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
+#from .forms import CustomSignupForm
+
 
 # Home View
 #def home(request):
@@ -45,9 +47,25 @@ def signup_user(request):
     return render(request, 'signup.html')
 
 
+'''
+#wanted to django builtin form for user sign up's
 
-
-
+def signup_user(request):
+    if request.method == 'POST':
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Create associated UserProfile
+            UserProfile.objects.create(user=user)
+            login(request, user)  # Log in the user after signup
+            messages.success(request, "Registration successful. Welcome!")
+            return redirect('home')  # Redirect to the home page or any desired page
+        else:
+            messages.error(request, "There was an error in the signup form. Please try again.")
+    else:
+        form = CustomSignupForm()
+    return render(request, 'signup.html', {'form': form})
+'''
 
 
 # User Login

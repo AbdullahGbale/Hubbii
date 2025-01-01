@@ -2,6 +2,8 @@
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm 
+from django import forms
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -53,4 +55,10 @@ class Experience(models.Model):
         return f"{self.position} at {self.company} ({self.user.username})"
 
 
+class CustomSignupForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=False)
 
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
