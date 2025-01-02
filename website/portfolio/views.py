@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
-from .models import Experience, Certificate
+from .models import Experience, Certificate, Profile, Project, Post
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import UserProfile
+#from .models import Profile
 from django.contrib.auth.decorators import login_required
 #from .forms import CustomSignupForm
 from .forms import PostForm
-
+from .models import Post
+from .models import Profile
+from .forms import ProfileForm
 
 # Home View
 #def home(request):
@@ -117,10 +119,10 @@ def home(request):
 
 
 # User Profile View
-def user_profile(request, username):
+def profile(request, username):
     user = get_object_or_404(User, username=username)
     posts = user.post_set.all()  # Assuming posts are linked to User
-    return render(request, 'user_profile.html', {'user': user, 'posts': posts})
+    return render(request, 'profile.html', {'user': user, 'posts': posts})
 
 
 
@@ -149,6 +151,7 @@ def portfolio(request):
 
 
 
+
 def search_users(request):
     results = None
     form = UserSearchForm()
@@ -165,25 +168,31 @@ def search_users(request):
 
 
 
-# Create a new post
-@login_required
+
+@login_required  # Ensure only logged-in users can create posts
 def create_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('profile', username=request.user.username)  # Redirect to the user's profile
+            post = form.save(commit=False)  # Don't save to the database yet
+            post.user = request.user  # Set the user field
+            post.save()  # Now save to the database
+            return redirect('home')  # Redirect to the home page (or another page)
     else:
         form = PostForm()
+
     return render(request, 'posts/create_post.html', {'form': form})
+
+
 
 # View posts for a user
 def user_posts(request, username):
     user = get_object_or_404(User, username=username)
     posts = user.posts.all()
     return render(request, 'posts/user_posts.html', {'user': user, 'posts': posts})
+
+
+
 
 # Update a post
 @login_required
@@ -198,6 +207,10 @@ def update_post(request, pk):
         form = PostForm(instance=post)
     return render(request, 'posts/update_post.html', {'form': form})
 
+
+
+
+
 # Delete a post
 @login_required
 def delete_post(request, pk):
@@ -206,3 +219,27 @@ def delete_post(request, pk):
         post.delete()
         return redirect('profile', username=request.user.username)
     return render(request, 'posts/delete_post.html', {'post': post})
+
+
+
+
+
+
+def post_list(request):
+    posts = Post.objects.all().order_by('-created_at')  # Retrieve all posts, most recent first
+    return render(request, 'posts/post_list.html', {'posts': posts})
+
+
+
+
+@login_required
+def profile_view(request):
+    profile = Profile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to profile page after saving
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'users/profile.html', {'form': form, 'profile': profile})

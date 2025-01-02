@@ -144,3 +144,19 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'your_email@gmail.com'  # Replace with your email
 EMAIL_HOST_PASSWORD = 'your_password'  # Replace with your email password
+
+
+LOGIN_URL = '/login/'  # Redirect unauthorized users to the login page
+
+
+INSTALLED_APPS += ['channels']
+
+ASGI_APPLICATION = 'project_name.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

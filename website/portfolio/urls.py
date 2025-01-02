@@ -15,7 +15,9 @@ urlpatterns += [
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('projects/', views.projects, name='projects'),
-    path('profile/<str:username>/', views.user_profile, name='user_profile'),  # User profile
+    path('profile/', views.profile_view, name='profile'),
+    #path('profile/<str:username>/', views.user_profile, name='user_profile'),  # User profile
+    path('posts/', views.post_list, name='post_list'),  # URL for viewing posts
     path('search/', views.search_users, name='search_users'),
     path('create/', views.create_post, name='create_post'),
     path('update/<int:pk>/', views.update_post, name='update_post'),
@@ -23,7 +25,7 @@ urlpatterns += [
     #path('search/', views.search, name='search'),
     path('collaborate/', views.collaborate, name='collaborate'),
     path('portfolio/', views.portfolio, name='portfolio'),
-    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
 
 
