@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-#from .models import Profile
+from .models import Portfolio
 from django.contrib.auth.decorators import login_required
 #from .forms import CustomSignupForm
 from .forms import PostForm
@@ -13,6 +13,8 @@ from .models import Profile
 from .forms import ProfileForm
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
+from .models import Project
+from .forms import ProjectForm
 
 # Home View
 #def home(request):
@@ -128,12 +130,39 @@ def profile(request, username):
 
 
 
+
+# View to display project posts
+@login_required
+def projects(request):
+    posts = Project.objects.filter(user=request.user)
+    return render(request, 'projects.html', {'posts': posts})
+
+
+
+# View to display portfolio posts
+@login_required
+def portfolio(request):
+    posts = Portfolio.objects.filter(user=request.user)  # Only show posts of the logged-in user
+    return render(request, 'portfolio.html', {'posts': posts})
+
+
+
+# View to display certificates posts
+@login_required
+def certificate(request):
+    posts = Collaborate.objects.filter(user=request.user)
+    return render(request, 'certificate.html', {'posts': posts})
+
+
+
+
+'''
 @login_required
 def projects(request):
     # Your logic to handle the 'projects' page
     return render(request, 'projects.html')
 
-''''
+
 def search(request):
     query = request.GET.get('q')
     if query:
@@ -142,14 +171,6 @@ def search(request):
         users = User.objects.none()  # No results
     return render(request, 'search_results.html', {'users': users})
 '''
-
-@login_required
-def collaborate(request):
-    return render(request, 'collaborate.html')
-
-@login_required
-def portfolio(request):
-    return render(request, 'portfolio.html')  # Render the portfolio template
 
 
 
@@ -248,14 +269,94 @@ def profile_view(request):
 
 
 
+@login_required
 def posts_by_category(request, category):
     posts = Post.objects.filter(category=category).order_by('-created_at')
-    return render(request, 'portfolio/posts_by_category.html', {'posts': posts, 'category': category})
-
-
-def posts_by_category(request, category):
-    posts_list = Post.objects.filter(category=category).order_by('-created_at')
-    paginator = Paginator(posts_list, 10)  # Show 10 posts per page
+    paginator = Paginator(posts, 5)  # Show 5 posts per page
     page_number = request.GET.get('page')
-    posts = paginator.get_page(page_number)
-    return render(request, 'portfolio/posts_by_category.html', {'posts': posts, 'category': category}
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'posts/posts_by_category.html', {
+        'page_obj': page_obj,
+        'category': category,
+    })
+
+
+
+
+
+
+# View to add a Project Post
+@login_required
+def add_project(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.user = request.user
+            project.save()
+            return redirect('project')
+    else:
+        form = ProjectForm()
+    return render(request, 'add_project.html', {'form': form})
+
+
+
+
+
+# View to add a Certificate Post
+@login_required
+def add_certificate(request):
+    if request.method == 'POST':
+        form = CertificateForm(request.POST)
+        if form.is_valid():
+            certificate = form.save(commit=False)
+            certificate.user = request.user
+            certificate.save()
+            return redirect('certificate')
+    else:
+        form = CertificateForm()
+    return render(request, 'add_certificate.html', {'form': form})
+
+
+
+
+# View to add a Portfolio Post
+@login_required
+def add_portfolio(request):
+    if request.method == 'POST':
+        form = PortfolioForm(request.POST)  # Process form data
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user  # Assign the current user to the post
+            post.save()  # Save the new post to the database
+            return redirect('portfolio')  # Redirect to portfolio page after saving
+    else:
+        form = PortfolioForm()  # Create a new form instance
+    return render(request, 'add_portfolio.html', {'form': form})  # Render the form
+
+
+
+
+@login_required
+def project_detail(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('project_detail', project_id=project.id)
+    else:
+        form = ProjectForm(instance=project)
+
+    return render(request, 'project_detail.html', {'form': form, 'project': project})
+
+@login_required
+def collaborate(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+
+    # Add the user to the list of collaborators
+    if request.user not in project.collaborators.all():
+        project.collaborators.add(request.user)
+
+    return redirect('project_detail', project_id=project.id)

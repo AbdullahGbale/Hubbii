@@ -32,20 +32,23 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    start_date = models.DateField(default='2024-01-01')
+    start_date = models.DateField(default='2025-01-01')
     end_date = models.DateField(null=True, blank=True)
     project_link = models.URLField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+    progress = models.IntegerField(default=0)  # To track project progress (0-100)
+    collaborators = models.ManyToManyField(User, related_name='collaborating_projects', blank=True)  # Track collaborators
 
     def __str__(self):
         return self.title
 
 
 class Certificate(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    issue_date = models.DateField()
-    issued_by = models.CharField(max_length=255, default='Unknown')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Links the certificate to a user
+    title = models.CharField(max_length=100) # The title of the certificate (e.g., "Web Development Certification")
+    description = models.TextField()  # A description of the certificate
+    issue_date = models.DateField() 
+    issued_by = models.CharField(max_length=255, default='Unknown') # The institution/organization that issued the certificate
     certificate_image = models.ImageField(upload_to='certificates/', blank=False)
     def __str__(self):
         return f"{self.title} ({self.user.username})"
@@ -93,3 +96,14 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
+
+
+class Portfolio(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    content = models.TextField()  # Ensure this field exists
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title

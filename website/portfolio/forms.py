@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Post
-from .models import Profile
+from .models import Portfolio, Certificate, Project, Post, Profile
+from django.db import models
 
 class CustomSignupForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -34,3 +34,27 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['profile_picture', 'bio', 'twitter', 'linkedin', 'github']
+
+
+
+class PortfolioForm(forms.ModelForm):
+    class Meta:
+        model = Portfolio
+        fields = ['title', 'content']
+
+
+
+
+class CertificateForm(forms.ModelForm):
+    class Meta:
+        model = Certificate
+        certificate_image = models.ImageField(upload_to='certificates/', blank=False)
+        fields = ['title', 'certificate_image', 'description', 'issued_by', 'issue_date']  # Fields for the certificate form
+
+
+
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['title', 'description', 'start_date', 'end_date', 'project_link', 'progress']

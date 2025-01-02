@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Detail</title>
+    <style>
+        .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+        }
+        .progress-bar-filled {
+            height: 30px;
+            width: 0;
+            background-color: #4caf50;
+            text-align: center;
+            color: white;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Project: {{ project.title }}</h1>
+
+<!-- Progress Bar -->
+<div class="progress-bar">
+    <div class="progress-bar-filled" style="width: {{ project.progress }}%;">{{ project.progress }}%</div>
+</div>
+
+<p>{{ project.description }}</p>
+
+<!-- Update Progress Form -->
+<h3>Update Progress</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Progress</button>
+</form>
+
+<!-- Collaborate Button -->
+<h3>Collaborate with This Project</h3>
+<form method="post" action="{% url 'collaborate' project.id %}">
+    {% csrf_token %}
+    <button type="submit">Collaborate</button>
+</form>
+
+<!-- Collaborators -->
+<h3>Collaborators</h3>
+<ul>
+    {% for user in project.collaborators.all %}
+        <li>{{ user.username }}</li>
+    {% empty %}
+        <li>No collaborators yet.</li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
