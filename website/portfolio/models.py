@@ -76,10 +76,16 @@ class CustomSignupForm(UserCreationForm):
 
 
 class Post(models.Model):
+    CATEGORY_CHOICES = [
+        ('Portfolio', 'Portfolio'),
+        ('Project', 'Project'),
+        ('Certificate', 'Certificate'),
+    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     description = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     file = models.FileField(upload_to='uploads/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

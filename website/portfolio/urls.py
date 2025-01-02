@@ -20,6 +20,7 @@ urlpatterns += [
     path('posts/', views.post_list, name='post_list'),  # URL for viewing posts
     path('search/', views.search_users, name='search_users'),
     path('create/', views.create_post, name='create_post'),
+    path('category/<str:category>/', views.posts_by_category, name='posts_by_category'),
     path('update/<int:pk>/', views.update_post, name='update_post'),
     path('delete/<int:pk>/', views.delete_post, name='delete_post'),
     #path('search/', views.search, name='search'),

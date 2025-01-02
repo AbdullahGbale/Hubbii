@@ -11,6 +11,8 @@ from .forms import PostForm
 from .models import Post
 from .models import Profile
 from .forms import ProfileForm
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 
 # Home View
 #def home(request):
@@ -243,3 +245,17 @@ def profile_view(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'users/profile.html', {'form': form, 'profile': profile})
+
+
+
+def posts_by_category(request, category):
+    posts = Post.objects.filter(category=category).order_by('-created_at')
+    return render(request, 'portfolio/posts_by_category.html', {'posts': posts, 'category': category})
+
+
+def posts_by_category(request, category):
+    posts_list = Post.objects.filter(category=category).order_by('-created_at')
+    paginator = Paginator(posts_list, 10)  # Show 10 posts per page
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
+    return render(request, 'portfolio/posts_by_category.html', {'posts': posts, 'category': category}
