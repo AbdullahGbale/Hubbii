@@ -351,12 +351,24 @@ def project_detail(request, project_id):
 
     return render(request, 'project_detail.html', {'form': form, 'project': project})
 
+
+'''
 @login_required
 def collaborate(request, project_id):
     project = get_object_or_404(Project, id=project_id)
-
-    # Add the user to the list of collaborators
-    if request.user not in project.collaborators.all():
+    if request.user != project.user:  # Prevent project owner from collaborating with their project
         project.collaborators.add(request.user)
-
+        project.save()
     return redirect('project_detail', project_id=project.id)
+'''
+
+
+
+def collaborate(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    if request.method == 'POST':
+        project.collaborators.add(request.user)
+        messages.success(request, 'You have joined the collaboration!')
+        return redirect('collaborate', project_id=project.id)
+    return render(request, 'collaborate.html', {'project': project})
+

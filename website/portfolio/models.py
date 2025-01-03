@@ -36,11 +36,15 @@ class Project(models.Model):
     end_date = models.DateField(null=True, blank=True)
     project_link = models.URLField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
-    progress = models.IntegerField(default=0)  # To track project progress (0-100)
+    progress = models.IntegerField(default=0)  # Progress tracking (0-100)
     collaborators = models.ManyToManyField(User, related_name='collaborating_projects', blank=True)  # Track collaborators
+
+    def collaborator_count(self):
+        return self.collaborators.count()
 
     def __str__(self):
         return self.title
+
 
 
 class Certificate(models.Model):

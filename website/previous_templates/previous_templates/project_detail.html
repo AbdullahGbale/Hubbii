@@ -26,6 +26,7 @@
 <!-- Progress Bar -->
 <div class="progress-bar">
     <div class="progress-bar-filled" style="width: {{ project.progress }}%;">{{ project.progress }}%</div>
+    <a href="/collaborate/{{ project.id }}" class="btn btn-secondary">Find Collaborators</a>
 </div>
 
 <p>{{ project.description }}</p>

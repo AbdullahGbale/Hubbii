@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Hubbii - Home
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h2>Welcome to Hubbii</h2>
+        <p>Join a thriving community of developers. Showcase your projects, collaborate, and grow together.</p>
+        <a href="/signup" class="btn btn-primary">Get Started</a>
+    </div>
+</section>
+
+<section id="projects" class="section">
+    <div class="container">
+        <h2>Featured Projects</h2>
+        <div class="project-list">
+            <!-- Placeholder for dynamically loaded projects -->
+            <div class="project">
+                <h3>Project's title</h3>
+                <p>Short description of the project...</p>
+                <a href="#" class="btn">View Project</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="collaborate" class="section">
+    <div class="container">
+        <h2>Collaborate with Others</h2>
+        <p>Find developers with similar interests and start working on something amazing together.</p>
+        <a href="{% url 'collaborate' project.id %}">Collaborate on {{ project.name }}</a>
+    </div>
+</section>
+
+<section id="about" class="section">
+    <div class="container">
+        <h2>About Us</h2>
+        <p>Hubbii is a platform designed to bring developers together. Whether you're a beginner or a pro, you'll find a place here to learn, share, and grow.</p>
+    </div>
+</section>
+{% endblock %}
