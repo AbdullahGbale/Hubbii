@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubbii - Home</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <!-- Vertical Navigation Bar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>Hubbii</h1>
+            </div>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'projects' %}">Projects</a></li>
+                <li><a href="{% url 'collaborate' %}">Collaborate</a></li>
+                <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
+                <li><a href="{% url 'profile' user.username %}">My Profile</a></li>
+                <li><a href="{% url 'search_users' %}">Search Users</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                    {% if user.is_authenticated %}
+                        <h2>Welcome back, {{ user.username }}!</h2>
+                    {% else %}
+                        <h2>Welcome to Hubbii!</h2>
+                    {% endif %}
+                    <p>Join a thriving community of developers. Showcase your projects, collaborate, and grow together.</p>
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Search Bar -->
+            <section class="search-bar">
+                <form method="get" action="{% url 'search_users' %}">
+                    <input type="text" name="query" placeholder="Search for developers or projects..." required>
+                    <button type="submit" class="btn btn-secondary">Search</button>
+                </form>
+            </section>
+
+            <!-- Feed Section -->
+            <section class="feed">
+                <h2>Latest Posts</h2>
+                <div class="post-list">
+                    {% for post in posts %}
+                        <div class="post">
+                            <h3>{{ post.title }}</h3>
+                            <p>{{ post.content|truncatewords:20 }}</p>
+                            <a href="{% url 'post_detail' post.id %}" class="btn btn-link">Read More</a>
+                        </div>
+                    {% empty %}
+                        <p>No posts available. Start by creating one!</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Featured Projects -->
+            <section id="projects" class="section">
+                <h2>Featured Projects</h2>
+                <div class="project-list">
+                    {% for project in projects %}
+                        <div class="project">
+                            <h3>{{ project.title }}</h3>
+                            <p>{{ project.description|truncatewords:15 }}</p>
+                            <a href="{% url 'project_detail' project.id %}" class="btn">View Project</a>
+                        </div>
+                    {% empty %}
+                        <p>No projects found. Add your first project!</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Collaborate Section -->
+            <section id="collaborate" class="section">
+                <h2>Collaborate with Others</h2>
+                <p>Find developers with similar interests and start working on something amazing together.</p>
+                <a href="{% url 'collaborate' %}" class="btn btn-secondary">Find Collaborators</a>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Hubbii. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+        </div>
+    </footer>
+</body>
+</html>
