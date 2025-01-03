@@ -1,0 +1,110 @@
+/* Base Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #004aad; /* Blue */
+    color: #ffffff;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Buttons */
+button, .btn {
+    background-color: #ff6600; /* Bright Orange */
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    background-color: #e65c00; /* Slightly darker orange for hover effect */
+}
+
+/* Forms */
+form {
+    background-color: #f4f4f4;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+}
+
+form h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #004aad; /* Blue */
+    text-align: center;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+form input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+form input:focus {
+    border-color: #004aad; /* Blue focus border */
+    outline: none;
+}
+
+/* Home Page */
+.home-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.home-container h1 {
+    color: #004aad; /* Blue */
+    margin-bottom: 1.5rem;
+}
+
+.home-container p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    color: #555;
+}
+
+/* Links */
+a {
+    color: #ff6600; /* Bright Orange */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #e65c00; /* Hover color for links */
+}
+
+/* Footer */
+footer {
+    background-color: #004aad; /* Blue */
+    color: #ffffff;
+    padding: 1rem;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+}

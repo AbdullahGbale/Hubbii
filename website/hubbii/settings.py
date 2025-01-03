@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'portfolio',  # New app
+    #'portfolio',  # trial and error app
+    'main', # Main app for the project 
      'rest_framework', # For API's
      'django_filters',
 ]
@@ -60,8 +61,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
         'DIRS': [
-            BASE_DIR / 'templates',  # Add this line
-        ],
+            BASE_DIR / "website/templates"],  # Custom global templates
+    
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,7 +124,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -147,6 +150,9 @@ EMAIL_HOST_PASSWORD = 'your_password'  # Replace with your email password
 
 
 LOGIN_URL = '/login/'  # Redirect unauthorized users to the login page
+
+LOGOUT_REDIRECT_URL = '/'  # Redirect to the homepage after logout
+
 
 
 INSTALLED_APPS += ['channels']

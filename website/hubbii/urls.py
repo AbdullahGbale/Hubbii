@@ -25,5 +25,6 @@ urlpatterns = [
     path('', views.home, name='home'),  # Define the root URL for the homepage
     # other paths...
     path('admin/', admin.site.urls),
-    path('', include('portfolio.urls')),  # Routes to the portfolio app
+    #path('', include('portfolio.urls')),  # Routes to the portfolio app
+    path('', include('main.urls')),  # Connect main app URLs
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

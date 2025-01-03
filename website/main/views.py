@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 
 
 # Home View
-@login_required
+#@login_required
 def home(request):
     profile = Profile.objects.get(user=request.user)
     return render(request, 'main/home.html', {'profile': profile})
@@ -58,3 +58,10 @@ def search(request):
     query = request.GET.get('q')
     results = User.objects.filter(username__icontains=query)
     return render(request, 'main/search.html', {'results': results})
+
+
+
+
+def default_profile(request):
+    # Render a page or redirect as needed
+    return render(request, 'main/default_profile.html')

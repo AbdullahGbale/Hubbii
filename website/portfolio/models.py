@@ -12,7 +12,7 @@ from django.dispatch import receiver
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="portfolio_profile")
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True)
@@ -39,12 +39,7 @@ class Project(models.Model):
     progress = models.IntegerField(default=0)  # Progress tracking (0-100)
     collaborators = models.ManyToManyField(User, related_name='collaborating_projects', blank=True)  # Track collaborators
 
-    def collaborator_count(self):
-        return self.collaborators.count()
-
-    def __str__(self):
-        return self.title
-
+    
 
 
 class Certificate(models.Model):

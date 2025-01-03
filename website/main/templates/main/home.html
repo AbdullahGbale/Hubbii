@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hubbii - Home</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <div class="layout">
@@ -17,11 +18,9 @@
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'projects' %}">Projects</a></li>
-                <li><a href="{% url 'collaborate' %}">Collaborate</a></li>
                 <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
-                <li><a href="{% url 'profile' user.username %}">My Profile</a></li>
-                <li><a href="{% url 'search_users' %}">Search Users</a></li>
-                <li><a href="{% url 'about' %}">About</a></li>
+                <a href="{% if user.username %}{% url 'profile' username=user.username %}{% else %}{% url 'default_profile_url' %}{% endif %}">Profile</a>
+                <li><a href="{% url 'search' %}">Search Users</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
@@ -30,6 +29,15 @@
                 {% endif %}
             </ul>
         </nav>
+        
+        
+        
+        {% if user.username %}
+        <a href="{% url 'profile' username=user.username %}">Go to Profile</a>
+        {% else %}
+        <a href="{% url 'default_profile_url' %}">Go to Default Profile</a>
+        {% endif %}
+
 
         <!-- Main Content -->
         <div class="main-content">
@@ -50,7 +58,7 @@
 
             <!-- Search Bar -->
             <section class="search-bar">
-                <form method="get" action="{% url 'search_users' %}">
+                <form method="get" action="{% url 'search' %}">
                     <input type="text" name="query" placeholder="Search for developers or projects..." required>
                     <button type="submit" class="btn btn-secondary">Search</button>
                 </form>
@@ -88,12 +96,7 @@
                 </div>
             </section>
 
-            <!-- Collaborate Section -->
-            <section id="collaborate" class="section">
-                <h2>Collaborate with Others</h2>
-                <p>Find developers with similar interests and start working on something amazing together.</p>
-                <a href="{% url 'collaborate' %}" class="btn btn-secondary">Find Collaborators</a>
-            </section>
+           
         </div>
     </div>
 

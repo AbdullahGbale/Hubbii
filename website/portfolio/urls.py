@@ -8,7 +8,7 @@ urlpatterns = [
    
 ]
 
-
+'''
 urlpatterns += [
     path('', views.home, name='home'),
     path('signup/', views.signup_user, name='signup'),
@@ -26,7 +26,7 @@ urlpatterns += [
     path('project/<int:project_id>/collaborate/', views.collaborate, name='collaborate'),
 
 
-    path('collaborate/', views.collaborate, name='collaborate'),
+
     path('portfolio/', views.portfolio, name='portfolio'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
@@ -59,5 +59,4 @@ urlpatterns += [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
         template_name='pwd_reset/pwd_reset_complete.html'), name='password_reset_complete'),
 ]
-
-
+'''
