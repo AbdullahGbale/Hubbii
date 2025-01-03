@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hubbii{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <nav>
+        {% if user.is_authenticated %}
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" />
+            <p>Welcome {{ user.username }}!</p>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'projects' %}">Projects</a></li>
+                <li><a href="{% url 'certificates' %}">Certificates</a></li>
+                <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
+                <li><a href="{% url 'search' %}">Search</a></li>
+            </ul>
+        {% endif %}
+    </nav>
+    {% block content %}{% endblock %}
+</body>
+</html>
+
