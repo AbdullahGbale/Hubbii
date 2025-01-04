@@ -166,3 +166,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+LOGOUT_REDIRECT_URL = '/'

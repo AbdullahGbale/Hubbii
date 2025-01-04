@@ -5,23 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Hubbii{% endblock %}</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <nav>
-        {% if user.is_authenticated %}
-            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" />
-            <p>Welcome {{ user.username }}!</p>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'profile' %}">Profile</a></li>
-                <li><a href="{% url 'projects' %}">Projects</a></li>
-                <li><a href="{% url 'certificates' %}">Certificates</a></li>
-                <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
-                <li><a href="{% url 'search' %}">Search</a></li>
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>Hubbii</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}" class="nav-item">
+                    <span class="icon">&#x1F3E0;</span> <!-- Home icon -->
+                    <span class="text">Home</span>
+                </a></li>
+                <li><a href="{% url 'profile' %}" class="nav-item">
+                    <span class="icon">&#x1F464;</span> <!-- Profile icon -->
+                    <span class="text">Profile</span>
+                </a></li>
+                <li><a href="{% url 'projects' %}" class="nav-item">
+                    <span class="icon">&#x1F4DA;</span> <!-- Projects icon -->
+                    <span class="text">Projects</span>
+                </a></li>
+                <li><a href="{% url 'messages' %}" class="nav-item">
+                    <span class="icon">&#x1F4E9;</span> <!-- Messages icon -->
+                    <span class="text">Messages</span>
+                </a></li>
+                <li><a href="{% url 'settings' %}" class="nav-item">
+                    <span class="icon">&#9881;</span> <!-- Settings icon -->
+                    <span class="text">Settings</span>
+                </a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" class="nav-item">
+                        <span class="icon">&#x1F6AA;</span> <!-- Logout icon -->
+                        <span class="text">Logout</span>
+                    </a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="nav-item">
+                        <span class="icon">&#x1F511;</span> <!-- Login icon -->
+                        <span class="text">Login</span>
+                    </a></li>
+                    <li><a href="{% url 'signup' %}" class="nav-item">
+                        <span class="icon">&#x1F4F0;</span> <!-- Sign Up icon -->
+                        <span class="text">Sign Up</span>
+                    </a></li>
+                {% endif %}
             </ul>
-        {% endif %}
-    </nav>
-    {% block content %}{% endblock %}
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            {% block content %}
+            <!-- Page-specific content goes here -->
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Hubbii. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+        </div>
+    </footer>
+
+    <script src="{% static 'scripts/script.js' %}"></script>
 </body>
 </html>

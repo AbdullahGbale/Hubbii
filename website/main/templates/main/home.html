@@ -10,17 +10,21 @@
 </head>
 <body>
     <div class="layout">
-        <!-- Vertical Navigation Bar -->
+        <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <div class="logo">
                 <h1>Hubbii</h1>
             </div>
             <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'home' %}" class="active">Home</a></li>
                 <li><a href="{% url 'projects' %}">Projects</a></li>
                 <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
-                <a href="{% if user.username %}{% url 'profile' username=user.username %}{% else %}{% url 'default_profile_url' %}{% endif %}">Profile</a>
                 <li><a href="{% url 'search' %}">Search Users</a></li>
+                {% if user.username %}
+                    <li><a href="{% url 'profile' username=user.username %}">Profile</a></li>
+                {% else %}
+                    <li><a href="{% url 'default_profile_url' %}">Profile</a></li>
+                {% endif %}
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
@@ -29,15 +33,6 @@
                 {% endif %}
             </ul>
         </nav>
-        
-        
-        
-        {% if user.username %}
-        <a href="{% url 'profile' username=user.username %}">Go to Profile</a>
-        {% else %}
-        <a href="{% url 'default_profile_url' %}">Go to Default Profile</a>
-        {% endif %}
-
 
         <!-- Main Content -->
         <div class="main-content">
@@ -95,8 +90,6 @@
                     {% endfor %}
                 </div>
             </section>
-
-           
         </div>
     </div>
 
@@ -109,5 +102,6 @@
             <a href="#">GitHub</a>
         </div>
     </footer>
+    <script src="{% static 'scripts/script.js' %}"></script>
 </body>
 </html>

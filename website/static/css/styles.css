@@ -1,110 +1,120 @@
-/* Base Styling */
+/* General Styling */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
     background-color: #ffffff;
     color: #333;
 }
 
 /* Header */
 header {
-    background-color: #004aad; /* Blue */
+    background-color: #004aad;
     color: #ffffff;
     padding: 1rem;
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
-}
-
-/* Buttons */
-button, .btn {
-    background-color: #ff6600; /* Bright Orange */
-    color: #ffffff;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover, .btn:hover {
-    background-color: #e65c00; /* Slightly darker orange for hover effect */
-}
-
-/* Forms */
-form {
-    background-color: #f4f4f4;
-    margin: 2rem auto;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-}
-
-form h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: #004aad; /* Blue */
-    text-align: center;
-}
-
-form label {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    display: block;
-}
-
-form input {
     width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
 }
 
-form input:focus {
-    border-color: #004aad; /* Blue focus border */
-    outline: none;
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: 60px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease; /* Added for collapsible functionality */
 }
 
-/* Home Page */
-.home-container {
-    text-align: center;
-    padding: 2rem;
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+    width: 60px;
 }
 
-.home-container h1 {
-    color: #004aad; /* Blue */
-    margin-bottom: 1.5rem;
+/* Sidebar Links */
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.home-container p {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    margin-bottom: 2rem;
-    color: #555;
+.sidebar ul li {
+    margin: 0;
+    padding: 0;
 }
 
-/* Links */
-a {
-    color: #ff6600; /* Bright Orange */
+.sidebar a {
+    display: block;
+    padding: 15px;
+    color: #333;
     text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-a:hover {
-    text-decoration: underline;
-    color: #e65c00; /* Hover color for links */
+.sidebar a:hover {
+    background-color: #ffa726;
+    color: #fff;
+}
+
+.sidebar a.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 250px; /* Matches sidebar width */
+    padding: 20px;
+    background-color: #f9f9f9;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-top: 80px;
+    transition: margin-left 0.3s ease; /* Added for collapsible functionality */
+}
+
+/* Adjust Content Area When Sidebar is Collapsed */
+.sidebar-collapsed .main-content {
+    margin-left: 60px;
 }
 
 /* Footer */
 footer {
-    background-color: #004aad; /* Blue */
+    background-color: #004aad;
     color: #ffffff;
-    padding: 1rem;
     text-align: center;
-    margin-top: 2rem;
-    font-size: 0.9rem;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+/* Toggle Button */
+.toggle-btn {
+    position: fixed;
+    top: 10px;
+    left: 260px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: left 0.3s ease;
+}
+
+/* Adjust Toggle Button Position When Sidebar is Collapsed */
+.sidebar-collapsed .toggle-btn {
+    left: 70px;
 }

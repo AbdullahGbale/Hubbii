@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects Page</title>
+</head>
+<body>
+    <h1>Projects Page</h1>
+    <p>Welcome to the projects page!</p>
+
+    <h2>Your Projects</h2>
+    <ul>
+        {% for project in user_projects %}
+            <li>
+                <strong>{{ project.title }}</strong><br>
+                {{ project.description }}<br>
+                <small>Start: {{ project.start_date }} | End: {{ project.end_date }}</small><br>
+                <a href="{{ project.project_link }}" target="_blank">View Project</a>
+            </li>
+        {% empty %}
+            <li>You have not posted any projects yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Other Users' Projects</h2>
+    <ul>
+        {% for project in other_projects %}
+            <li>
+                <strong>{{ project.title }}</strong><br>
+                {{ project.description }}<br>
+                <small>By: {{ project.user.username }} | Start: {{ project.start_date }} | End: {{ project.end_date }}</small><br>
+                <a href="{{ project.project_link }}" target="_blank">View Project</a>
+            </li>
+        {% empty %}
+            <li>No projects from other users yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add a New Project</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post Project</button>
+    </form>
+</body>
+</html>

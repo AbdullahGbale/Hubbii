@@ -11,5 +11,8 @@ urlpatterns = [
     path('certificates/', views.certificates, name='certificates'),
     path('portfolio/', views.portfolio, name='portfolio'),
     path('search/', views.search, name='search'),
+    #path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('logout/', LogoutView.as_view(), name='logout'),
 ]
+
