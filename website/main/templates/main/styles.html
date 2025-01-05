@@ -13,28 +13,19 @@
     <ul>
         {% for project in user_projects %}
             <li>
-                {% if project.image %}
-                    <img src="{{ project.image.url }}" alt="{{ project.title }}" style="max-width: 200px; max-height: 200px;">
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
                 <strong>{{ project.title }}</strong><br>
                 {{ project.description }}<br>
                 <small>Start: {{ project.start_date }} | End: {{ project.end_date }}</small><br>
                 <a href="{{ project.project_link }}" target="_blank">View Project</a>
-
-                <!-- Update Form -->
-                <form method="post" enctype="multipart/form-data">
+                <!-- Update and Delete Buttons -->
+                <form method="post" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="project_id" value="{{ project.id }}">
-                    {{ form.as_p }}
-                    <button type="submit" name="update-project">Update Project</button>
+                    <button type="submit" name="update-project">Update</button>
                 </form>
-
-                <!-- Delete Button -->
-                <form method="post" action="{% url 'project_delete' project.id %}">
+                <form method="post" action="{% url 'project_delete' project.id %}" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit">Delete Project</button>
+                    <button type="submit">Delete</button>
                 </form>
             </li>
         {% empty %}
@@ -42,8 +33,22 @@
         {% endfor %}
     </ul>
 
+    <h2>Other Users' Projects</h2>
+    <ul>
+        {% for project in other_projects %}
+            <li>
+                <strong>{{ project.title }}</strong><br>
+                {{ project.description }}<br>
+                <small>By: {{ project.user.username }} | Start: {{ project.start_date }} | End: {{ project.end_date }}</small><br>
+                <a href="{{ project.project_link }}" target="_blank">View Project</a>
+            </li>
+        {% empty %}
+            <li>No projects from other users yet.</li>
+        {% endfor %}
+    </ul>
+
     <h2>Add a New Project</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" name="create-project">Post Project</button>
