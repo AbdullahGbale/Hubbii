@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hubbii Search Results</title>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    {% if page.object_list %}  {# Use page.object_list #}
+        <ul>
+            {% for result in page.object_list %}
+                <li>
+                    {% if result.object.get_absolute_url %}
+                        <a href="{{ result.object.get_absolute_url }}">{{ result }}</a> {# Display the result itself #}
+                    {% else %}
+                        {{ result }} {#If not object with url just display result #}
+                    {% endif %}
+
+                    {% if result.object.description %}
+                        <p>{{ result.object.description }}</p>
+                    {% endif %}
+                    {% if result.object.owner %}
+                        <p>By: {{ result.object.owner.username }}</p>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if page.has_next %}
+            <a href="?q={{ query }}&page={{ page.next_page_number }}">Next page</a>
+        {% endif %}
+    {% else %}
+        <p>No results found for your search.</p>
+    {% endif %}
+</body>
+</html>

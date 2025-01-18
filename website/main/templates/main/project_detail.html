@@ -1,0 +1,75 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <h1>{{ project.title }}</h1>
+    <p>{{ project.description }}</p>
+    {% if project.image %}
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" width="200">
+    {% endif %}
+    <p>Owner: {{ project.owner.username }}</p>
+
+    <div id="rating-container">
+        Rating: <span id="average-rating">{{ project.average_rating }}</span> / 7
+        {% if user.is_authenticated %}
+            <div>
+                {% for i in "1234567" %}
+                    <button class="rate-button" data-rating="{{ i }}">{{ i }}</button>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div>
+        <h2>Comments</h2>
+        {% for comment in project.comments.all %}
+            <p>{{ comment.user.username }}: {{ comment.text }}</p>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit" name="comment_submit">Add Comment</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div>
+        <h2>Reactions</h2>
+        {% if user.is_authenticated %}
+            <button class="react-button" data-reaction="like"><i class="far fa-thumbs-up"></i></button>
+            <button class="react-button" data-reaction="love"><i class="fas fa-heart"></i></button>
+            <button class="react-button" data-reaction="wow"><i class="fas fa-star"></i></button>
+            <button class="react-button" data-reaction="haha"><i class="far fa-laugh"></i></button>
+            <button class="react-button" data-reaction="sad"><i class="far fa-frown"></i></button>
+            <button class="react-button" data-reaction="angry"><i class="fas fa-angry"></i></button>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated and user != project.owner %}
+        {% if not has_sent_request %}
+            <form method="post" action="{% url 'send_collaboration_request' project.id %}">
+                {% csrf_token %}
+                <button type="submit">Request Collaboration</button>
+            </form>
+        {% else %}
+            <p>Collaboration request sent.</p>
+        {% endif %}
+    {% endif %}
+
+    {% if request.user == project.owner %}
+        <a href="{% url 'edit_project' project.id %}">Edit</a>
+        <a href="{% url 'delete_project' project.id %}">Delete</a>
+    {% endif %}
+{% endblock %}
+<script>
+    const rateButtons = document.querySelectorAll('.rate-button');
+    rateButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const rating = button.dataset.rating;
+            const projectId = "{{ project.id }}";
+            fetch(`/project/<span class="math-inline">\{projectId\}/rate/</span>{rating}/`, {method: 'POST', headers: {'X-CSRFToken': '{{ csrf_token }}'}})
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('average-rating').textContent = data.average_rating;

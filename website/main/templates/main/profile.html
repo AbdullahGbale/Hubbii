@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <h1>{{ user.username }}'s Profile</h1>
+    <p>{{ profile.bio }}</p>
+    <p>Total Posts: {{ projects.count }}</p>
+    <p>Followers: {{ profile.followers.count }}</p>
+
+    {% if request.user.is_authenticated and request.user != user %}
+    <form method="post" action="{% url 'follow_user' user.username %}">
+        {% csrf_token %}
+        <button type="submit">{% if is_following %}Unfollow{% else %}Follow{% endif %}</button>
+    </form>
+    {% endif %}
+    {# ... other profile information #}
+
+    <h2>Projects</h2>
+    <div class="project-list">
+        {% for project in projects %}
+        {% include 'main/project_post.html' %}
+        {% endfor %}
+    </div>
+
+    {% if user == request.user %}
+        <h3>Collaboration Requests</h3>
+        {% if user.received_collaboration_requests.all %}
+        <ul>
+            {% for request in user.received_collaboration_requests.all %}
+                <li>
+                    {{ request.sender.username }} wants to collaborate on <a href="{% url 'project_detail' request.project.id %}">{{ request.project.title }}</a>
+                    <form method="post" action="{% url 'accept_collaboration_request' request.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit">Accept</button>
+                    </form>
+                    <form method="post" action="{% url 'reject_collaboration_request' request.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit">Reject</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No collaboration requests.</p>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

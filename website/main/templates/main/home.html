@@ -1,0 +1,94 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="layout">
+  <nav class="sidebar">
+    <div class="logo">
+      <h1>Hubbii</h1>
+    </div>
+
+    <ul>
+      <li><a href="{% url 'home' %}" class="active">Home</a></li>
+      <li><a href="{% url 'projects' %}">Projects</a></li>
+      {% if user.username %}
+        <li><a href="{% url 'profile' username=user.username %}">Profile</a></li>
+      {% else %}
+        <li><a href="{% url 'default_profile_url' %}">Profile</a></li>
+      {% endif %}
+      {% if user.is_authenticated %}
+        <li>
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+          </form>
+        </li>
+      {% else %}
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <div class="main-content">
+    <section class="hero">
+      <div class="container">
+        {% if user.is_authenticated %}
+          <h2>Welcome back, {{ user.username }}!</h2>
+        {% else %}
+          <h2>Welcome to Hubbii!</h2>
+        {% endif %}
+        <p>Join a thriving community of developers. Showcase your projects, collaborate, and grow together.</p>
+        {% if not user.is_authenticated %}
+          <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="search-bar">
+      <form method="get" action="{% url 'search' %}">
+        <input type="text" name="query" placeholder="Search for developers or projects..." required>
+        <button type="submit" class="btn btn-secondary">Search</button>
+      </form>
+    </section>
+
+    <section class="feed">
+      <h2>Latest Posts</h2>
+      <div class="post-list">
+        {% from main.models import Project %}  {# Import the Project model #}
+        {% with latest_projects=Project.objects.order_by('-created_at')[:3] %}  {# Fetch 3 most recent projects #}
+          {% if latest_projects %}
+            {% for project in latest_projects %}
+              <div class="post">
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.description|truncatewords:20 }}</p>
+                <a href="{% url 'project_detail' project.id %}" class="btn btn-link">Read More</a>
+                {% include 'main/project_post.html' %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>No posts available. <a href="{% url 'create_project' %}">Start by creating one!</a></p>
+          {% endif %}
+        {% endwith %}
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <h2>Featured Projects</h2>
+      <div class="project-list">
+        </div>
+    </section>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2024 Hubbii. All rights reserved.</p>
+  <div class="social-links">
+    <a href="#">Twitter</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+<script>
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+{% endblock %}

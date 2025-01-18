@@ -1,0 +1,14 @@
+<div class="project">
+    <h3><a href="{% url 'project_detail' project.id %}">{{ project.title }}</a></h3>
+    <a href="{% url 'profile' project.owner.username %}">@{{ project.owner.username }}</a>
+    {% if project.image %}
+        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+    {% endif %}
+    <p>{{ project.description|truncatewords:20 }}</p>
+    <p>
+        <form method="post" action="{% url 'like_project' project.id %}" style="display:inline">
+            {% csrf_token %}
+            <button type="submit"><i class="fa {% if request.user in project.likes.all %}fa-heart{% else %}fa-heart-o{% endif %}"></i> {{ project.total_likes }}</button>
+        </form>
+    </p>
+</div>
