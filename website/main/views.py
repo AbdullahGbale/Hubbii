@@ -6,18 +6,29 @@ from django.contrib.auth.models import User
 from .forms import ProjectForm, PostForm, CommentForm
 from django.shortcuts import get_object_or_404 
 from django.http import HttpResponse
-
+from django.contrib.auth import logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from .models import Project
 
 
 
 # Create your views here:
 
 
-# Home View
-#@login_required
+
 def home(request):
-    profile = Profile.objects.get(user=request.user)
-    return render(request, 'main/home.html', {'profile': profile})
+    projects = Project.objects.order_by('-created_at')
+    return render(request, 'main/home.html', {'projects': projects})
+
+
+
+def custom_logout_view(request):
+    logout(request)
+    return redirect('home')  # Redirect to your homepage or another URL
+
+
 
 
 
@@ -42,13 +53,19 @@ def certificates(request):
 
 
 # Search View
-@login_required
 def search(request):
-    query = request.GET.get('q', '').strip()
-    results = User.objects.filter(username__icontains=query) if query else []
-    return render(request, 'main/search.html', {'query': query, 'results': results})
+    query = request.GET.get('q', '')  # Get the search query from the request
+    users = User.objects.filter(username__icontains=query) if query else []
+    projects = Project.objects.filter(name__icontains=query) if query else [] 
+    portfolios = Portfolio.objects.filter(name__icontains=query) if query else []  
 
-
+    context = {
+        'query': query,
+        'users': users,
+        'projects': projects,
+        'portfolios': portfolios,
+    }
+    return render(request, 'main/search_results.html', context)
 
 
 def default_profile(request):
@@ -169,3 +186,49 @@ def add_comment(request, post_id):
 
 
 
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect to login after signup
+    else:
+        form = UserCreationForm()
+    return render(request, 'main/signup.html', {'form': form})
+
+
+
+
+
+
+def signin_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'You have successfully logged in.')
+            return redirect('/')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'login.html')
+
+
+
+
+
+from django.template.loader import get_template
+
+def debug_template(request):
+    template = get_template('login.html')  # Replace with your template name
+    return HttpResponse("Template found successfully!")
+
+
+
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    projects = user.projects.all()
+    return render(request, 'main/profile.html', {'profile_user': user, 'projects': projects})

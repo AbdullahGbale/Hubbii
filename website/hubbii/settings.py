@@ -60,8 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-        'DIRS': [
-            BASE_DIR / "website/templates"],  # Custom global templates
+        'DIRS': ['/home/iceking/Hubbii/website/main/templates'],  # Custom app based templates
     
         'APP_DIRS': True,
         'OPTIONS': {
@@ -149,9 +148,6 @@ EMAIL_HOST_USER = 'your_email@gmail.com'  # Replace with your email
 EMAIL_HOST_PASSWORD = 'your_password'  # Replace with your email password
 
 
-LOGIN_URL = '/login/'  # Redirect unauthorized users to the login page
-
-LOGOUT_REDIRECT_URL = '/'  # Redirect to the homepage after logout
 
 
 
@@ -168,7 +164,11 @@ CHANNEL_LAYERS = {
 }
 
 
-LOGOUT_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'  # Redirect to the homepage after logout
+
+LOGIN_REDIRECT_URL = '/'  # Redirect to the homepage after login
+
 
 
 MEDIA_URL = '/media/'

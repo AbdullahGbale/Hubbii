@@ -34,7 +34,7 @@ class ProfileForm(forms.ModelForm):
 class PortfolioForm(forms.ModelForm):
     class Meta:
         model = Portfolio
-        fields = ['skills', 'your_DP_image', 'about_you', 'project_link']
+        fields = ['name', 'skills', 'your_DP_image', 'about_you', 'project_link']
 
 
 class CertificateForm(forms.ModelForm):
@@ -51,7 +51,7 @@ class CertificateForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
   class Meta:
     model = Project
-    fields = ['title', 'image',  'description', 'start_date', 'end_date', 'project_link', 'progress', 'technologies']
+    fields = ['name', 'image',  'description', 'start_date', 'end_date', 'project_link', 'progress', 'technologies']
 
 
 

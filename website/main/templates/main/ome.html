@@ -26,13 +26,7 @@
                     <li><a href="{% url 'default_profile_url' %}">Profile</a></li>
                 {% endif %}
                 {% if user.is_authenticated %}
-                    <!-- Logout Button -->
-                    <li>
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="logout-btn">Logout</button>
-                        </form>
-                    </li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'signup' %}">Sign Up</a></li>
@@ -108,6 +102,6 @@
             <a href="#">GitHub</a>
         </div>
     </footer>
-    <script src="{% static 'scripts/script.js' %}"></script>
+    <!-- <script src="{% static 'scripts/script.js' %}"></script>  --> 
 </body>
 </html>

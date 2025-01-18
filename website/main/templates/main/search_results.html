@@ -1,0 +1,36 @@
+
+
+{% block content %}
+    <h2>Search Results for "{{ query }}"</h2>
+
+    {% if users or projects or portfolios %}
+        {% if users %}
+            <h3>Users</h3>
+            <ul>
+                {% for user in users %}
+                    <li>{{ user.username }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if projects %}
+            <h3>Projects</h3>
+            <ul>
+                {% for project in projects %}
+                    <li>{{ project.title }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if portfolios %}
+            <h3>Portfolios</h3>
+            <ul>
+                {% for portfolio in portfolios %}
+                    <li>{{ portfolio.title }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+{% endblock %}
