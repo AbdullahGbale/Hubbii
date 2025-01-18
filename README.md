@@ -116,9 +116,6 @@ hubbii/
 │   ├── users/
 │   ├── projects/
 │   └── templates/
-├── frontend/
-│   ├── public/
-│   └── src/
 ├── .env
 ├── requirements.txt
 └── README.md
