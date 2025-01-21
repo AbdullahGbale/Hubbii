@@ -1,30 +1,40 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE) # Link to the user who created the project
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to="project_images/", null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    tags = models.CharField(max_length=255, blank=True, help_text="Separate tags with commas")
+    demo_link = models.URLField(blank=True)
+    source_code_link = models.URLField(blank=True)
+    image = models.ImageField(upload_to='project_images/', blank=True, null=True)
 
     likes = models.ManyToManyField(User, related_name='liked_projects', blank=True)
 
-    def total_likes(self):
-        return self.likes.count()
-
-    def __str__(self):
-        return self.title
-    
     total_rating = models.IntegerField(default=0)
     num_ratings = models.IntegerField(default=0)
+
+    def total_likes(self):
+        return self.likes.count()
 
     def average_rating(self):
         if self.num_ratings == 0:
             return 0
         return self.total_rating / self.num_ratings
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('project_detail', args=[self.id])
+    
+
+    
 
 class Rating(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='ratings')
@@ -81,3 +91,12 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     followers = models.ManyToManyField(User, related_name='following', blank=True)
     # Add other profile fields as needed
+
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
+
+    def __str__(self):
+        return self.user.username

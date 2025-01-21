@@ -11,7 +11,7 @@ urlpatterns = [
     #path('', views.project_list, name='project_list'),
     #path('logout/', LogoutView.as_view(next_page=reverse_lazy('home')), name='logout'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-     path('signup/', views.signup, name='signup'),
+    path('signup/', views.signup, name='signup'),
     path('projects/', views.list_projects, name='projects'),
     path('profile/<str:username>/', views.profile, name='profile'),
     path('create_project/', views.create_project, name='create_project'),
@@ -26,6 +26,7 @@ urlpatterns = [
 
     path('profile/<str:username>/follow/', views.follow_user, name="follow_user"),
     path('project/<int:project_id>/like/', views.like_project, name="like_project"),
+    
 
 
     path('default-profile/', views.show_default_profile, name='default_profile_url'),

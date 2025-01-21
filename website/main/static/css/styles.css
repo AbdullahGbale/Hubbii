@@ -73,14 +73,7 @@ body {
     font-size: 1.2rem;
 }
 
-.main-content {
-    flex-grow: 1; /* Main content takes remaining space */
-    padding: 20px;
-    margin-left: 250px; /* Adjust margin based on sidebar width */
-    transition: margin-left 0.3s ease;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
+
 
 .main-content {
     flex-grow: 1;
@@ -99,7 +92,7 @@ body {
 }
 
 .project-list { /* Style the project list container */
-    width: 80%; /* Adjust width as needed */
+    width: 100 /* Adjust width as needed */
     max-width: 800px; /* Set a maximum width */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */

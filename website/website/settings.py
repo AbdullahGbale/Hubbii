@@ -37,13 +37,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'main',
+    'crispy_forms',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'django.contrib.auth',
     'haystack',
-
 ]
+
+#CRISPY_TEMPLATE_PACK = 'bootstrap5'  # Or you can use 'bootstrap4' or 'uni-form'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -171,3 +173,7 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_TEMPLATES = [
     ('main', 'search/search.html'),
 ]
+
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'

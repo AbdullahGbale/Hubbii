@@ -7,6 +7,9 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.models import User 
 from django.contrib.auth import get_user_model
+from .forms import SignupForm
+from .forms import SignupForm
+
 
 
 
@@ -15,21 +18,34 @@ from django.contrib.auth import get_user_model
 def home(request):
     projects = Project.objects.all()
     return render(request, 'main/home.html', {'projects': projects})
-'''
+
 
 def home(request):
     projects = Project.objects.order_by('-created_at')[:10]  # Get the 10 most recent projects (adjust as needed)
     context = {'projects': projects}
     return render(request, 'main/home.html', context)
+'''
+
+
+def home(request):
+    latest_projects = Project.objects.order_by('-created_at')[:10]  # Fetch the 3 latest projects
+    return render(request, 'main/home.html', {'latest_projects': latest_projects})
+
 
 
 def signup(request):
-    # Your logic for user registration
     if request.method == 'POST':
-        # Handle form submission and user creation
-        pass
-    context = {}
+        form = SignupForm(request.POST, request.FILES)  # Include uploaded files
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect to login page after successful signup
+    else:
+        form = SignupForm()
+    context = {'form': form}
     return render(request, 'main/signup.html', context)
+
+
+
 
 
 def profile(request, username):
@@ -39,6 +55,7 @@ def profile(request, username):
     return render(request, 'main/profile.html', context)
 
 
+'''
 @login_required
 def create_project(request):
     if request.method == 'POST':
@@ -51,6 +68,29 @@ def create_project(request):
     else:
         form = ProjectForm()
     return render(request, 'main/create_project.html', {'form': form})
+'''
+
+
+
+@login_required
+def create_project(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, request.FILES)  # Handle potential image uploads
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.owner = request.user
+            project.save()
+            messages.success(request, 'Project created successfully!')
+            return redirect('project_detail', project_id=project.id)
+        else:
+            messages.error(request, 'There was an error in the form. Please correct it.')
+    else:
+        form = ProjectForm()
+    return render(request, 'main/create_project.html', {'form': form})
+
+
+
+
 
 
 
@@ -73,6 +113,7 @@ def project_detail(request, project_id):
 
 
 
+'''
 @login_required
 def edit_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
@@ -83,6 +124,23 @@ def edit_project(request, project_id):
         if form.is_valid():
             form.save()
             return redirect('project_detail', project_id=project.id)
+    else:
+        form = ProjectForm(instance=project)
+    return render(request, 'main/edit_project.html', {'form': form, 'project': project})
+'''
+
+
+@login_required
+def edit_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id, owner=request.user)  # Ensure owner can edit
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, request.FILES, instance=project)  # Handle potential image edits
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Project updated successfully!')
+            return redirect('project_detail', project_id=project.id)
+        else:
+            messages.error(request, 'There was an error in the form. Please correct it.')
     else:
         form = ProjectForm(instance=project)
     return render(request, 'main/edit_project.html', {'form': form, 'project': project})
@@ -229,6 +287,8 @@ def follow_user(request, username):
 
 
 
+
+'''
 @login_required
 def like_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
@@ -237,6 +297,25 @@ def like_project(request, project_id):
     else:
         project.likes.add(request.user)
     return redirect('project_detail', project_id=project_id)
+'''
+
+
+
+@login_required
+def like_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    if request.user in project.likes.all():
+        project.likes.remove(request.user)
+        liked = False
+    else:
+        project.likes.add(request.user)
+        liked = True
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest': #For AJAX requests
+        return JsonResponse({'likes_count': project.total_likes(), 'liked': liked})
+    else:
+        return redirect('project_detail', project_id=project_id)
+
 
 
 
@@ -246,3 +325,10 @@ def show_default_profile(request):
     # Your logic to display the default profile content
     context = {'message': 'This is the default profile.'}
     return render(request, 'main/default_profile.html', context)
+
+
+
+
+
+
+

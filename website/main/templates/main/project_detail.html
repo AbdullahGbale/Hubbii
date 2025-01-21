@@ -1,11 +1,26 @@
 {% extends 'main/base.html' %}
+
 {% block content %}
+<div class="container">
     <h1>{{ project.title }}</h1>
     <p>{{ project.description }}</p>
     {% if project.image %}
-        <img src="{{ project.image.url }}" alt="{{ project.title }}" width="200">
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" width="300px">
     {% endif %}
     <p>Owner: {{ project.owner.username }}</p>
+    <p>Tags: {{ project.tags }}</p>
+    {% if project.demo_link %}
+        <p>Demo: <a href="{{ project.demo_link }}">{{ project.demo_link }}</a></p>
+    {% endif %}
+    {% if project.source_code_link %}
+        <p>Source Code: <a href="{{ project.source_code_link }}">{{ project.source_code_link }}</a></p>
+    {% endif %}
+
+    <div id="like-section">
+        <button id="like-button" class="btn btn-primary {% if request.user in project.likes.all %}active{% endif %}" data-project-id="{{ project.id }}">
+            {% if request.user in project.likes.all %}Unlike{% else %}Like{% endif %} (<span id="likes-count">{{ project.total_likes }}</span>)
+        </button>
+    </div>
 
     <div id="rating-container">
         Rating: <span id="average-rating">{{ project.average_rating }}</span> / 7
@@ -17,6 +32,7 @@
             </div>
         {% endif %}
     </div>
+
     <div>
         <h2>Comments</h2>
         {% for comment in project.comments.all %}
@@ -26,11 +42,11 @@
         {% endfor %}
 
         {% if user.is_authenticated %}
-        <form method="post">
-            {% csrf_token %}
-            {{ comment_form.as_p }}
-            <button type="submit" name="comment_submit">Add Comment</button>
-        </form>
+            <form method="post">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" name="comment_submit">Add Comment</button>
+            </form>
         {% endif %}
     </div>
 
@@ -61,15 +77,11 @@
         <a href="{% url 'edit_project' project.id %}">Edit</a>
         <a href="{% url 'delete_project' project.id %}">Delete</a>
     {% endif %}
-{% endblock %}
+</div>
 <script>
-    const rateButtons = document.querySelectorAll('.rate-button');
-    rateButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const rating = button.dataset.rating;
-            const projectId = "{{ project.id }}";
-            fetch(`/project/<span class="math-inline">\{projectId\}/rate/</span>{rating}/`, {method: 'POST', headers: {'X-CSRFToken': '{{ csrf_token }}'}})
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    document.getElementById('average-rating').textContent = data.average_rating;
+    const likeButton = document.getElementById('like-button');
+    likeButton.addEventListener('click', () => {
+        const projectId = likeButton.dataset.projectId;
+        fetch(`/project/${projectId}/like/`, {
+            method: 'POST',
+            headers: {
