@@ -1,4 +1,4 @@
-#!/home/iceking/Hubbii/env/bin/python3
+#!/home/iceking/Hubbii/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
