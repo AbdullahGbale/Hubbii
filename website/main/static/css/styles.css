@@ -123,3 +123,17 @@ footer {
     padding: 10px 0;
     margin-top: auto; /* Push footer to bottom */
 }
+
+
+
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.errorlist {
+    color: red;
+    margin-top: 5px;
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
