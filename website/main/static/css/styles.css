@@ -15,14 +15,14 @@ body {
 }
 
 .sidebar {
-    background-color: #2e0cf1;
+    background: linear-gradient(#2e0cf1, );
     color: white;
-    width: 60px; /* Fixed width for sidebar */
+    width: 50px; /* Fixed width for sidebar */
     padding: 20px;
     transition: width 0.3s ease; /* Add transition for smooth collapse */
     overflow-y: auto; /* Add scroll for long sidebar content */
-    position: fixed; /* Keep the sidebar fixed */
-    height: 100%;
+    position: absolute; /* Keep the sidebar fixed */
+    height: 100vh;
     left: 0; /* Align the sidebar to the left edge */
 }
 
@@ -124,6 +124,7 @@ footer {
     margin-top: auto; /* Push footer to bottom */
 }
 
+<<<<<<< HEAD
 
 
 
@@ -137,3 +138,17 @@ footer {
     list-style-type: none; /* Remove bullet points */
     padding: 0;
 }
+=======
+@media screen and (max-width: 600px)
+{
+    .sidebar {
+    background: linear-gradient(#2e0cf1, );
+    color: white;
+    width: 100%; /* Fixed width for sidebar */
+    padding: 20px;
+    position: absolute; /* Keep the sidebar fixed */
+    height: 50px;
+    left: 0; /* Align the sidebar to the left edge */
+}
+}
+>>>>>>> 4a464901b276ff0378944e07998ca184efb027ed
