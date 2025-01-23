@@ -288,18 +288,6 @@ def follow_user(request, username):
 
 
 
-'''
-@login_required
-def like_project(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    if request.user in project.likes.all():
-        project.likes.remove(request.user)
-    else:
-        project.likes.add(request.user)
-    return redirect('project_detail', project_id=project_id)
-'''
-
-
 
 @login_required
 def like_project(request, project_id):
