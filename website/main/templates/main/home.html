@@ -1,15 +1,18 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="layout">
-  <nav class="sidebar">
-    <div class="logo">
-      <h1>Hubbii</h1>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="logo">
+        <a href="{% url 'home' %}"> <img src="{% static 'images/your_logo.png' %}" alt="hubbii" style="max-width: 100%; height: auto;"></a>
     </div>
 
     <ul>
       <li><a href="{% url 'home' %}" class="active">Home</a></li>
-      <li><a href="{% url 'projects' %}">Projects</a></li>
+      <li><a href="{% url 'projects' %}">Posts</a></li>
+      <li><a href="{% url 'create_project' %}">Create</a></li>
+ 
       {% if user.username %}
         <li><a href="{% url 'profile' username=user.username %}">Profile</a></li>
       {% else %}

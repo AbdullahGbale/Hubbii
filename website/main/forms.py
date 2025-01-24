@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ['title', 'description', 'tags', 'demo_link', 'source_code_link', 'image']
+        fields = ['title', 'description', 'tags', 'demo_link', 'source_code_link', 'image', 'video']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),  # Adjust number of rows as needed
             'tags': forms.TextInput(attrs={'placeholder': 'e.g., Python, Django, Web Development'}),

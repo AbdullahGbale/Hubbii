@@ -12,49 +12,17 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
         crossorigin="anonymous">
 </head>
+
 <body>
-  <header>
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <form method="POST" action="{% url 'account_logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="logout-btn btn btn-danger">Logout</button>
-      </form>
-      <a href="{% url 'home' %}" class="btn btn-primary mt-2">
-        <i class="fas fa-home"></i> Home
-      </a>
-    </nav>
-  </header>
 
-  <div class="container-fluid">
-    <div class="row">
-      <!-- Sidebar -->
-      <aside class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-        <div class="position-sticky pt-3">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">
-                <i class="fas fa-home"></i> Dashboard
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fas fa-user"></i> Profile
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fas fa-cog"></i> Settings
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fas fa-question-circle"></i> Help
-              </a>
-            </li>
-          </ul>
-        </div>
-      </aside>
-
+  {% if request.user.is_authenticated %}
+    {% if request.user.userprofile.profile_picture %}
+        <img src="{{ request.user.userprofile.profile_picture.url }}" alt="Profile Picture" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+    {% else %}
+        <img src=""C:\Users\HP\Downloads\Gemini_Generated_Image_uq9xyguq9xyguq9x.jfif"" alt="Default Avatar" style="width: 50px; height: 60px; border-radius: 60%; margin-right: 10px;">
+    {% endif %}
+    <span>{{ request.user.username }}</span>
+  {% endif %}
       <!-- Main Content -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="pt-3 pb-2 mb-3 border-bottom">

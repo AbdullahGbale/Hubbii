@@ -13,6 +13,7 @@ class Project(models.Model):
     demo_link = models.URLField(blank=True)
     source_code_link = models.URLField(blank=True)
     image = models.ImageField(upload_to='project_images/', blank=True, null=True)
+    video = models.FileField(upload_to='project_videos/', blank=True, null=True)
 
     likes = models.ManyToManyField(User, related_name='liked_projects', blank=True)
 
