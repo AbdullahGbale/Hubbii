@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="main-content"><div class="form-container">
+    <h2>Create Portfolio Interview Post (PIP)</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Post Resume</button>
+    </form>
+</div></div>
+{% endblock %}

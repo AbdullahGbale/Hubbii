@@ -22,7 +22,8 @@ body {
     transition: width 0.3s ease, background-color 0.2s ease; /* Added background-color transition */
     overflow-y: auto;
     position: fixed; /* Keep the sidebar fixed */
-    height: 100vh;
+    height: 100%;
+    top: 0;
     left: 0;
     z-index: 100; /* Ensure sidebar is above other content */
 }

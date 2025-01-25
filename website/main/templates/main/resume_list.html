@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="main-content">
+    <h2>Resumes</h2>
+    {% for pip in pips %}
+    <div class="form-container">
+        <h3>{{ pip.title }}</h3>
+        <p><strong>User:</strong> {{ pip.user.username }}</p>
+        <p><strong>Summary:</strong> {{ pip.summary }}</p>
+        {% if pip.experience %}
+        <p><strong>Experience:</strong> {{ pip.experience }}</p>
+        {% endif %}
+        {% if pip.education %}
+        <p><strong>Education:</strong> {{ pip.education }}</p>
+        {% endif %}
+        {% if pip.skills %}
+        <p><strong>Skills:</strong> {{ pip.skills }}</p>
+        {% endif %}
+        {% if pip.projects %}
+        <p><strong>Projects:</strong> {{ pip.projects }}</p>
+        {% endif %}
+        <p><strong>Posted:</strong> {{ pip.created_at }}</p>
+    </div>
+    {% empty %}
+        <p>No resumes posted yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

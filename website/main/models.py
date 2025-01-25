@@ -115,3 +115,22 @@ class Post(models.Model):
 
     def __str__(self):
         return f"Post by {self.user.username} on {self.created_at}"
+    
+
+
+
+class PIP(models.Model):  # Portfolio Interview Post
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    summary = models.TextField()
+    experience = models.TextField(blank=True, null=True)
+    education = models.TextField(blank=True, null=True)
+    skills = models.TextField(blank=True, null=True)
+    projects = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at'] # Order by latest post

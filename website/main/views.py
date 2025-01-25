@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from .forms import SignupForm
 from .forms import SignupForm
-
+from .forms import PIPForm
 
 
 
@@ -112,22 +112,6 @@ def project_detail(request, project_id):
     return render(request, 'main/project_detail.html', context)
 
 
-
-'''
-@login_required
-def edit_project(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    if request.user != project.owner:
-        return redirect('home')  # Or display an error message
-    if request.method == 'POST':
-        form = ProjectForm(request.POST, request.FILES, instance=project)
-        if form.is_valid():
-            form.save()
-            return redirect('project_detail', project_id=project.id)
-    else:
-        form = ProjectForm(instance=project)
-    return render(request, 'main/edit_project.html', {'form': form, 'project': project})
-'''
 
 
 @login_required
@@ -319,4 +303,21 @@ def show_default_profile(request):
 
 
 
+@login_required
+def create_pip(request):
+    if request.method == 'POST':
+        form = PIPForm(request.POST)
+        if form.is_valid():
+            pip = form.save(commit=False)
+            pip.user = request.user
+            pip.save()
+            return redirect('resume_list')  # Redirect to resume list after posting
+    else:
+        form = PIPForm()
+    return render(request, 'main/create_pip.html', {'form': form})
+
+
+def resume_list(request):
+    pips = PIP.objects.all()
+    return render(request, 'main/resume_list.html', {'pips': pips})
 

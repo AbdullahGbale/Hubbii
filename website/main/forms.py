@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import UserProfile
 from django.db import models
 from django.contrib.auth.models import User
+from .models import PIP
 
 
 
@@ -41,3 +42,19 @@ class SignupForm(UserCreationForm):
             user.save()
             UserProfile.objects.create(user=user)  # Create the related UserProfile instance
         return user
+    
+
+
+
+
+class PIPForm(forms.ModelForm):
+    class Meta:
+        model = PIP
+        fields = ['title', 'summary', 'experience', 'education', 'skills', 'projects']
+        widgets = {
+            'summary': forms.Textarea(attrs={'rows': 4}),
+            'experience': forms.Textarea(attrs={'rows': 4}),
+            'education': forms.Textarea(attrs={'rows': 4}),
+            'skills': forms.Textarea(attrs={'rows': 4}),
+            'projects': forms.Textarea(attrs={'rows': 4}),
+        }

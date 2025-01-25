@@ -5,13 +5,17 @@
   <div class="layout">
     <nav class="sidebar">
       <div class="logo">
-        <a href="{% url 'home' %}"> <img src="{% static 'images/your_logo.png' %}" alt="hubbii" style="max-width: 100%; height: auto;"></a>
+        <a href="{% url 'home' %}"> <img src="{% static 'images/hubbii.webp' %}" alt="hubbii" style="max-width: 100%; height: auto;"></a>
     </div>
 
     <ul>
       <li><a href="{% url 'home' %}" class="active">Home</a></li>
-      <li><a href="{% url 'projects' %}">Posts</a></li>
-      <li><a href="{% url 'create_project' %}">Create</a></li>
+      <li><a href="{% url 'projects' %}">Legacies</a></li>
+      <li><a href="{% url 'resume_list' %}">Portfolios</a></li>
+      {% if request.user.is_authenticated %}
+      <li><a href="{% url 'create_project' %}">+LEO</a></li>
+      <li><a href="{% url 'create_pip' %}">+PIP</a></li>
+      {% endif %}
  
       {% if user.username %}
         <li><a href="{% url 'profile' username=user.username %}">Profile</a></li>

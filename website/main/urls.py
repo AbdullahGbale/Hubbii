@@ -39,4 +39,9 @@ urlpatterns = [
     path('collaboration_request/<int:request_id>/accept/', views.accept_collaboration_request, name='accept_collaboration_request'),
     path('collaboration_request/<int:request_id>/reject/', views.reject_collaboration_request, name='reject_collaboration_request'),
 
+
+
+    path('pip/', views.create_pip, name='create_pip'), #PIP creation page
+    path('resume/', views.resume_list, name='resume_list'), #Resume display page
+
 ]
