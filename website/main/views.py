@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from .forms import SignupForm
 from .forms import SignupForm
 from .forms import PIPForm
+from .models import PIP
 
 
 

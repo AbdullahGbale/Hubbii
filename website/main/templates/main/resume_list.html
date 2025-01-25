@@ -11,15 +11,22 @@
         {% if pip.experience %}
         <p><strong>Experience:</strong> {{ pip.experience }}</p>
         {% endif %}
+
+
         {% if pip.education %}
         <p><strong>Education:</strong> {{ pip.education }}</p>
         {% endif %}
+
+
         {% if pip.skills %}
         <p><strong>Skills:</strong> {{ pip.skills }}</p>
         {% endif %}
+
+
         {% if pip.projects %}
         <p><strong>Projects:</strong> {{ pip.projects }}</p>
         {% endif %}
+        
         <p><strong>Posted:</strong> {{ pip.created_at }}</p>
     </div>
     {% empty %}
