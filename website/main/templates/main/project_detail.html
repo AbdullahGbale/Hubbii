@@ -1,83 +1,93 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-<div class="container">
-    <h1>{{ project.title }}</h1>
-    <p>{{ project.description }}</p>
+<div class="container my-4">
+    <h1 class="mb-4">{{ project.title }}</h1>
+    <p class="lead mb-4">{{ project.description }}</p>
+    
     {% if project.image %}
-        <img src="{{ project.image.url }}" alt="{{ project.title }}" width="300px">
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="rounded mb-4" width="auto" height="300px">
     {% endif %}
-    <p>Owner: {{ project.owner.username }}</p>
-    <p>Tags: {{ project.tags }}</p>
+    
+    <p><strong>Owner:</strong> <a href="{% url 'profile' project.owner.username %}">{{ project.owner.username }}</a></p>
+    <p><strong>Tags:</strong> {{ project.tags }}</p>
+
     {% if project.demo_link %}
-        <p>Demo: <a href="{{ project.demo_link }}">{{ project.demo_link }}</a></p>
+        <p><strong>Demo:</strong> <a href="{{ project.demo_link }}" class="text-primary" target="_blank">{{ project.demo_link }}</a></p>
     {% endif %}
+    
     {% if project.source_code_link %}
-        <p>Source Code: <a href="{{ project.source_code_link }}">{{ project.source_code_link }}</a></p>
+        <p><strong>Source Code:</strong> <a href="{{ project.source_code_link }}" class="text-primary" target="_blank">{{ project.source_code_link }}</a></p>
     {% endif %}
 
-    <div id="like-section">
+    <div id="like-section" class="mb-4">
         <button id="like-button" class="btn btn-primary {% if request.user in project.likes.all %}active{% endif %}" data-project-id="{{ project.id }}">
             {% if request.user in project.likes.all %}Unlike{% else %}Like{% endif %} (<span id="likes-count">{{ project.total_likes }}</span>)
         </button>
     </div>
 
-    <div id="rating-container">
-        Rating: <span id="average-rating">{{ project.average_rating }}</span> / 7
+    <div id="rating-container" class="mb-4">
+        <strong>Rating:</strong> <span id="average-rating">{{ project.average_rating }}</span> / 7
         {% if user.is_authenticated %}
-            <div>
+            <div class="mt-2">
                 {% for i in "1234567" %}
-                    <button class="rate-button" data-rating="{{ i }}">{{ i }}</button>
+                    <button class="btn btn-outline-secondary rate-button" data-rating="{{ i }}">{{ i }}</button>
                 {% endfor %}
             </div>
         {% endif %}
     </div>
 
-    <div>
+    <div class="comments-section mb-4">
         <h2>Comments</h2>
         {% for comment in project.comments.all %}
-            <p>{{ comment.user.username }}: {{ comment.text }}</p>
+            <div class="comment mb-2">
+                <strong>{{ comment.user.username }}:</strong>
+                <p>{{ comment.text }}</p>
+            </div>
         {% empty %}
             <p>No comments yet.</p>
         {% endfor %}
 
         {% if user.is_authenticated %}
-            <form method="post">
+            <form method="post" class="mt-3">
                 {% csrf_token %}
                 {{ comment_form.as_p }}
-                <button type="submit" name="comment_submit">Add Comment</button>
+                <button type="submit" name="comment_submit" class="btn btn-primary">Add Comment</button>
             </form>
         {% endif %}
     </div>
 
-    <div>
+    <div class="reactions-section mb-4">
         <h2>Reactions</h2>
         {% if user.is_authenticated %}
-            <button class="react-button" data-reaction="like"><i class="far fa-thumbs-up"></i></button>
-            <button class="react-button" data-reaction="love"><i class="fas fa-heart"></i></button>
-            <button class="react-button" data-reaction="wow"><i class="fas fa-star"></i></button>
-            <button class="react-button" data-reaction="haha"><i class="far fa-laugh"></i></button>
-            <button class="react-button" data-reaction="sad"><i class="far fa-frown"></i></button>
-            <button class="react-button" data-reaction="angry"><i class="fas fa-angry"></i></button>
+            <div>
+                <button class="btn btn-outline-primary react-button" data-reaction="like"><i class="far fa-thumbs-up"></i> Like</button>
+                <button class="btn btn-outline-danger react-button" data-reaction="love"><i class="fas fa-heart"></i> Love</button>
+                <button class="btn btn-outline-warning react-button" data-reaction="wow"><i class="fas fa-star"></i> Wow</button>
+                <button class="btn btn-outline-info react-button" data-reaction="haha"><i class="far fa-laugh"></i> Haha</button>
+                <button class="btn btn-outline-secondary react-button" data-reaction="sad"><i class="far fa-frown"></i> Sad</button>
+                <button class="btn btn-outline-dark react-button" data-reaction="angry"><i class="fas fa-angry"></i> Angry</button>
+            </div>
         {% endif %}
     </div>
 
     {% if user.is_authenticated and user != project.owner %}
         {% if not has_sent_request %}
-            <form method="post" action="{% url 'send_collaboration_request' project.id %}">
+            <form method="post" action="{% url 'send_collaboration_request' project.id %}" class="mt-4">
                 {% csrf_token %}
-                <button type="submit">Request Collaboration</button>
+                <button type="submit" class="btn btn-success">Request Collaboration</button>
             </form>
         {% else %}
-            <p>Collaboration request sent.</p>
+            <p class="text-muted">Collaboration request sent.</p>
         {% endif %}
     {% endif %}
 
     {% if request.user == project.owner %}
-        <a href="{% url 'edit_project' project.id %}">Edit</a>
-        <a href="{% url 'delete_project' project.id %}">Delete</a>
+        <a href="{% url 'edit_project' project.id %}" class="btn btn-warning">Edit Project</a>
+        <a href="{% url 'delete_project' project.id %}" class="btn btn-danger">Delete Project</a>
     {% endif %}
 </div>
+
 <script>
     const likeButton = document.getElementById('like-button');
     likeButton.addEventListener('click', () => {
@@ -85,3 +95,19 @@
         fetch(`/project/${projectId}/like/`, {
             method: 'POST',
             headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'project_id': projectId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const likesCount = document.getElementById('likes-count');
+            const likeButton = document.getElementById('like-button');
+            likesCount.textContent = data.total_likes;
+            likeButton.textContent = data.user_liked ? 'Unlike' : 'Like';
+            likeButton.classList.toggle('active', data.user_liked);
+        });
+    });
+</script>
+{% endblock %}
