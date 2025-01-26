@@ -124,6 +124,18 @@ footer {
     margin-top: auto;
 }
 
+.form-container {
+	position: absolute;
+	width: 60%;
+	height: 100%;
+	padding: 0px 40px;
+	transition: all 0.6s ease-in-out;
+	background-color: #FFF;
+	box-shadow: 25px 30px 55px #5557;
+	border-radius: 13px;
+	overflow: hidden;
+}
+
 .form-group {
     margin-bottom: 15px;
 }
