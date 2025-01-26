@@ -21,12 +21,12 @@
                     <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
                     {{ field }}
                     {% if field.help_text %}
-                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    <!--    <small class="form-text text-muted">{{ field.help_text }}</small>-->
                     {% endif %}
                 </div>
             {% endfor %}
             <div class="form-group">
-                <label for="profile_picture">Upload File</label>
+                <label for="profile_picture">Upload <picture></picture></label>
                 <input type="file" name="profile_picture" id="profile_picture" class="form-control">
             </div>
             <button type="submit" class="btn btn-primary">Sign Up</button>
