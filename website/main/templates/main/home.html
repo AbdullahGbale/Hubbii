@@ -2,93 +2,150 @@
 {% load static %}
 
 {% block content %}
-  <div class="layout">
-    <nav class="sidebar">
-      <div class="logo">
-        <a href="{% url 'home' %}"> <img src="{% static 'images/hubbii.webp' %}" alt="hubbii" style="max-width: 100%; height: auto;"></a>
-    </div>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <nav class="col-md-3 col-lg-2 d-none d-md-block bg-light sidebar">
+      <div class="logo p-4">
+        <a href="{% url 'home' %}"><img src="{% static 'images/hubbii.webp' %}" alt="hubbii" class="img-fluid"></a>
+      </div>
 
-    <ul>
-      <li><a href="{% url 'home' %}" class="active">Home</a></li>
-      <li><a href="{% url 'projects' %}">Legacies</a></li>
-      <li><a href="{% url 'resume_list' %}">Portfolios</a></li>
-      {% if request.user.is_authenticated %}
-      <li><a href="{% url 'create_project' %}">+LEO</a></li>
-      <li><a href="{% url 'create_pip' %}">+PIP</a></li>
-      {% endif %}
- 
-      {% if user.username %}
-        <li><a href="{% url 'profile' username=user.username %}">Profile</a></li>
-      {% else %}
-        <li><a href="{% url 'default_profile_url' %}">Profile</a></li>
-      {% endif %}
-      {% if user.is_authenticated %}
-        <li>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'home' %}">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'projects' %}">
+            Legacies
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'resume_list' %}">
+            Portfolios
+          </a>
+        </li>
+
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'create_project' %}">+LEO</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'create_pip' %}">+PIP</a>
+        </li>
+        {% endif %}
+
+        {% if user.username %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile' username=user.username %}">
+            Profile
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'default_profile_url' %}">
+            Profile
+          </a>
+        </li>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <li class="nav-item">
           <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
-            <button type="submit" class="logout-btn">Logout</button>
+            <button type="submit" class="btn btn-link nav-link text-danger p-0">Logout</button>
           </form>
         </li>
-      {% else %}
-        <li><a href="{% url 'login' %}">Login</a></li>
-        <li><a href="{% url 'signup' %}">Sign Up</a></li>
-      {% endif %}
-    </ul>
-  </nav>
-
-  <div class="main-content">
-    <section class="hero">
-      <div class="container">
-        {% if user.is_authenticated %}
-          <h2>Welcome back, {{ user.username }}!</h2>
         {% else %}
-          <h2>Welcome to Hubbii!</h2>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">
+            Login
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'signup' %}">
+            Sign Up
+          </a>
+        </li>
         {% endif %}
-        <p>Join a thriving community of developers. Showcase your projects, collaborate, and grow together.</p>
-        {% if not user.is_authenticated %}
-          <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
-        {% endif %}
-      </div>
-    </section>
+      </ul>
+    </nav>
 
-    <section class="search-bar">
-      <form method="get" action="{% url 'search' %}">
-        <input type="text" name="query" placeholder="Search for developers or projects..." required>
-        <button type="submit" class="btn btn-secondary">Search</button>
-      </form>
-    </section>
+    <!-- Main content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-4">
+      <!-- Hero Section -->
+      <section class="hero mt-4">
+        <div class="container">
+          {% if user.is_authenticated %}
+            <h2>Welcome back, {{ user.username }}!</h2>
+          {% else %}
+            <h2>Welcome to Hubbii!</h2>
+          {% endif %}
+          <p>Join a thriving community of developers. Showcase your projects, collaborate, and grow together.</p>
+          {% if not user.is_authenticated %}
+            <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
+          {% endif %}
+        </div>
+      </section>
 
-    <section class="feed">
-      <h2>Latest Posts</h2>
-      <div class="post-list">
-        {% if latest_projects %}
-          {% for project in latest_projects %}
-            <div class="post">
-              <h3>{{ project.title }}</h3>
-              <p>{{ project.description|truncatewords:20 }}</p>
-              <a href="{% url 'project_detail' project.id %}" class="btn btn-link">Read More</a>
-              {% include 'main/project_post.html' %}
-            </div>
-          {% endfor %}
-        {% else %}
-          <p>No posts available. <a href="{% url 'create_project' %}">Start by creating one!</a></p>
-        {% endif %}
-      </div>
-    </section>
+      <!-- Search Section -->
+      <section class="search-bar mt-4">
+        <div class="container">
+          <form method="get" action="{% url 'search' %}" class="d-flex">
+            <input type="text" name="query" class="form-control" placeholder="Search for developers or projects..." required>
+            <button type="submit" class="btn btn-outline-primary ms-2">Search</button>
+          </form>
+        </div>
+      </section>
 
-    <section id="projects" class="section">
-      <h2>Featured Projects</h2>
-      <div class="project-list"></div>
-    </section>
+      <!-- Feed Section -->
+      <section class="feed mt-4">
+        <div class="container">
+          <h2>Latest Posts</h2>
+          <div class="row">
+            {% if latest_projects %}
+              {% for project in latest_projects %}
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ project.title }}</h5>
+                      <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+                      <a href="{% url 'project_detail' project.id %}" class="btn btn-link">Read More</a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p>No posts available. <a href="{% url 'create_project' %}">Start by creating one!</a></p>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Projects Section -->
+      <section id="projects" class="section mt-4">
+        <div class="container">
+          <h2>Featured Projects</h2>
+          <div class="row project-list">
+            <!-- Featured projects will be dynamically inserted here -->
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 </div>
 
-<footer>
-  <p>&copy; 2024 Hubbii. All rights reserved.</p>
-  <div class="social-links">
-    <a href="#">Twitter</a>
-    <a href="#">LinkedIn</a>
-    <a href="#">GitHub</a>
+<!-- Footer Section -->
+<footer class="mt-5 bg-dark text-white py-3">
+  <div class="container text-center">
+    <p>&copy; 2024 Hubbii. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#" class="text-white me-3">Twitter</a>
+      <a href="#" class="text-white me-3">LinkedIn</a>
+      <a href="#" class="text-white">GitHub</a>
+    </div>
   </div>
 </footer>
+
 {% endblock %}
