@@ -1,8 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
 body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    background-color: #c9d6ff;
     color: #333;
     display: flex;
     min-height: 100vh;
@@ -87,7 +94,56 @@ body {
     flex-direction: column;
     align-items: flex-start;
 }
-
+.main-contnt {
+    background-color: #c9d6ff;
+    background: linear-gradient(to right, #e2e2e2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .form-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .form-container form {
+    max-width: 400px;
+  }
+  
+  .errorlist {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .errorlist li {
+    color: red;
+    margin-bottom: 5px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
 .main-content.expanded {
     margin-left: 150px;
 }
@@ -122,29 +178,6 @@ footer {
     text-align: center;
     padding: 10px 0;
     margin-top: auto;
-}
-
-.form-container {
-	position: absolute;
-	width: 60%;
-	height: 100%;
-	padding: 0px 40px;
-	transition: all 0.6s ease-in-out;
-	background-color: #FFF;
-	box-shadow: 25px 30px 55px #5557;
-	border-radius: 13px;
-	overflow: hidden;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.errorlist {
-    color: red;
-    margin-top: 5px;
-    list-style-type: none;
-    padding: 0;
 }
 
 /* --- RESUME PAGE STYLES --- */
